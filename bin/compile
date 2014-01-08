@@ -32,10 +32,10 @@ echo "-----> Configuring GTS with prefix $BUILD_DIR/.tools/gts"
 ./configure --prefix=$BUILD_DIR/.tools/gts > /dev/null 2>&1
 echo "-----> Compiling GTS"
 make -j5 > /dev/null 2>&1
-echo "-----> installing GTS"
+echo "-----> installing GTS to $BUILD_DIR/.tools/gts"
 make install > /dev/null 2>&1
 echo "--------> cleaning up $BUILD_DIR/$GTS_WORKDIR"
- rm -Rf $BUILD_DIR/$GTS_WORKDIR
+rm -Rf $BUILD_DIR/$GTS_WORKDIR
 echo "-> INSTALLED"
 
 # once build, add GTS lib to LD_LIBRARY_PATH
@@ -61,13 +61,13 @@ echo "-----> Configuring graphviz with prefix $BUILD_DIR/.tools/graphviz"
 ./configure --prefix=$BUILD_DIR/.tools/graphviz --enable-shared=yes --enable-static=yes --with-gts=yes > /dev/null 2>&1
 echo "-----> Compiling graphviz"
 make -j5 >/dev/null 2>&1
-echo "-----> Installing graphviz"
+echo "-----> Installing graphviz to $BUILD_DIR/.tools/graphviz"
 make install > /dev/null 2>&1
 echo "--------> cleaning up $BUILD_DIR/$GRAPHVIZ_WORKDIR"
 rm -Rf $BUILD_DIR/$GRAPHVIZ_WORKDIR
 echo "-> INSTALLED" 
 
-echo "---------> exporting updated PATH"
+echo "---------> exporting updated PATH=$PATH:$BUILD_DIR/.tools/graphviz/bin:$BUILD_DIR/.tools/gts/bin"
 export PATH=$PATH:$BUILD_DIR/.tools/graphviz/bin:$BUILD_DIR/.tools/gts/bin
 
 
