@@ -20,25 +20,27 @@ ENV_FILE=$3
 
 ## install graphviz
 echo "-----> Downloading GNU GTS"
-mkdir -p $1/tmp
-cd $1/tmp
+GTS_WORKDIR="tmp_gts"
+echo "--------> creating dir $1/$GTS_WORKDIR"
+mkdir -p $1/$GTS_WORKDIR
+cd $1/$GTS_WORKDIR
 curl -L http://downloads.sourceforge.net/project/gts/gts/0.7.6/gts-0.7.6.tar.gz > gts-0.7.6.tar.gz
-echo "-----> Untarring gts-0.7.6.tar.gz"
+echo "--------> Untarring gts-0.7.6.tar.gz"
 tar zxvf gts-0.7.6.tar.gz > /dev/null 2>&1
 cd gts-0.7.6
-echo "--------> Configuring GTS"
+echo "-----> Configuring GTS with prefix $1/.tools/gts"
 ./configure --prefix=$1/.tools/gts > /dev/null 2>&1
-echo "--------> Compiling GTS"
+echo "-----> Compiling GTS"
 make -j5 > /dev/null 2>&1
-echo "--------> installing GTS"
+echo "-----> installing GTS"
 make install > /dev/null 2>&1
-echo "--------> cleaning up"
-# rm -Rf 
+echo "--------> cleaning up $1/$GTS_WORKDIR"
+# rm -Rf $1/$GTS_WORKDIR
 echo "-> INSTALLED"
 echo "-----> Downloading graphviz"
 # need to download graphviz binary and dependencies
 GRAPHVIZ_SOURCE_URL="http://www.graphviz.org/pub/graphviz/stable/SOURCES/graphviz-2.34.0.tar.gz"
-GRAPHVIZ_WORKDIR="tmp"
+GRAPHVIZ_WORKDIR="tmp_graphviz"
 GRAPHVIZ_INSTALLDIR="vendor/graphviz"
 echo "--------> creating dir $1/$GRAPHVIZ_WORKDIR"
 mkdir -p $1/$GRAPHVIZ_WORKDIR
@@ -54,16 +56,12 @@ echo "-----> Compiling graphviz"
 make -j5 >/dev/null 2>&1
 echo "-----> Installing graphviz"
 make install > /dev/null 2>&1
+echo "--------> cleaning up $1/$GRAPHVIZ_WORKDIR"
+rm -Rf $1/$GRAPHVIZ_WORKDIR
 echo "-> INSTALLED" 
 
-#echo "-----> Adding binaries to path"
-#echo "---------> creating bin dir $1/.tools/graphviz/bin"
-#mkdir -p $1/.tools/graphviz/bin
-#echo "---------> copying files"
-#cp $CACHE_DIR/.tools/graphviz/bin/* $1/.tools/graphviz/bin/
-#ls $1/.tools/graphviz/bin/
 echo "---------> exporting updated PATH"
-export PATH=$PATH:$1/.tools/graphviz/bin
+export PATH=$PATH:$1/.tools/graphviz/bin:$1/.tools/gts/bin
 
 
 ##
