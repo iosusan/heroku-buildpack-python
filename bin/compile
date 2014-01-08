@@ -41,7 +41,7 @@ echo "-> INSTALLED"
 
 echo "-----> Adding binaries to path"
 echo "---------> creating bin dir /app/.tools/graphviz/bin"
-mkdir -p /app/bin
+mkdir -p /app/.tools/graphviz/bin
 echo "---------> copying files"
 cp $CACHE_DIR/.tools/graphviz/bin/* /app/.tools/graphviz/bin/
 ls /app/.tools/graphviz/bin/
