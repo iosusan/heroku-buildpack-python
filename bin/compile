@@ -39,10 +39,10 @@ echo "--------> cleaning up $BUILD_DIR/$GTS_WORKDIR"
 echo "-> INSTALLED"
 
 # once build, add GTS lib to LD_LIBRARY_PATH
-export C_INCLUDE_PATH=$BUILD_DIR/.tools/gts/include
-export CPLUS_INCLUDE_PATH=$BUILD_DIR/.tools/gts/include
-export LIBRARY_PATH=$BUILD_DIR/.tools/graphviz/lib:$BUILD_DIR/.tools/gts/lib
-export LD_LIBRARY_PATH=$BUILD_DIR/.tools/graphviz/lib:$BUILD_DIR/.tools/gts/lib
+export C_INCLUDE_PATH=$CACHE_DIR/.tools/gts/include
+export CPLUS_INCLUDE_PATH=$CACHE_DIR/.tools/gts/include
+export LIBRARY_PATH=$CACHE_DIR/.tools/gts/lib
+export LD_LIBRARY_PATH=$CACHE_DIR/.tools/gts/lib
 
 echo "-----> Downloading graphviz"
 # need to download graphviz binary and dependencies
@@ -68,7 +68,7 @@ echo "--------> cleaning up $BUILD_DIR/$GRAPHVIZ_WORKDIR"
 echo "-> INSTALLED" 
 
 echo "---------> exporting updated PATH"
-export PATH=$PATH:$1/.tools/graphviz/bin:$1/.tools/gts/bin
+export PATH=$PATH:$CACHE_DIR/.tools/graphviz/bin:$CACHE_DIR/.tools/gts/bin
 
 
 ##
