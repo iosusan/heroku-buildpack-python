@@ -19,19 +19,19 @@ ENV_FILE=$3
 
 
 ## install graphviz
-echo "-----> downloading GNU GTS"
+echo "-----> Downloading GNU GTS"
 mkdir -p $1/tmp
 cd $1/tmp
 curl -L http://downloads.sourceforge.net/project/gts/gts/0.7.6/gts-0.7.6.tar.gz > gts-0.7.6.tar.gz
-echo "-----> untarring gts-0.7.6.tar.gz"
-tar zxvf gts-0.7.6.tar.gz
+echo "-----> Untarring gts-0.7.6.tar.gz"
+tar zxvf gts-0.7.6.tar.gz > /dev/null 2>&1
 cd gts-0.7.6
-echo "--------> configuring GTS"
+echo "--------> Configuring GTS"
 ./configure --prefix=$1/.tools/gts > /dev/null 2>&1
 echo "--------> Compiling GTS"
 make -j5 > /dev/null 2>&1
 echo "--------> installing GTS"
-make install
+make install > /dev/null 2>&1
 echo "-> INSTALLED"
 echo "-----> Downloading graphviz"
 # need to download graphviz binary and dependencies
