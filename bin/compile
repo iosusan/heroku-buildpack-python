@@ -22,7 +22,7 @@ ENV_FILE=$3
 echo "-----> Downloading GNU GTS"
 mkdir -p $1/tmp
 cd $1/tmp
-curl -L http://downloads.sourceforge.net/project/gts/gts/0.7.6/gts-0.7.6.tar.gz > gts-0.7.6.tar.gz
+curl -L http://downloads.sourceforge.net/project/gts/gts/0.7.6/gts-0.7.6.tar.gz > gts-0.7.6.tar.gz > /dev/null 2>&1
 echo "-----> Untarring gts-0.7.6.tar.gz"
 tar zxvf gts-0.7.6.tar.gz > /dev/null 2>&1
 cd gts-0.7.6
@@ -133,8 +133,8 @@ BUILD_DIR=$APP_DIR
 export PATH=$BUILD_DIR/.heroku/python/bin:$BUILD_DIR/.heroku/vendor/bin:$PATH
 export PYTHONUNBUFFERED=1
 export LANG=en_US.UTF-8
-export C_INCLUDE_PATH=/app/.heroku/vendor/include:$BUILD_DIR/.heroku/vendor/include
-export CPLUS_INCLUDE_PATH=/app/.heroku/vendor/include:$BUILD_DIR/.heroku/vendor/include
+export C_INCLUDE_PATH=/app/.heroku/vendor/include:$BUILD_DIR/.heroku/vendor/include:$1/.tools/gts/include
+export CPLUS_INCLUDE_PATH=/app/.heroku/vendor/include:$BUILD_DIR/.heroku/vendor/include:$1/.tools/gts/include
 export LIBRARY_PATH=/app/.heroku/vendor/lib:$BUILD_DIR/.heroku/vendor/lib:$1/.tools/graphviz/lib:$1/.tools/gts/lib
 export LD_LIBRARY_PATH=/app/.heroku/vendor/lib:$BUILD_DIR/.heroku/vendor/lib:$1/.tools/graphviz/lib:$1/.tools/gts/lib
 export PKG_CONFIG_PATH=/app/.heroku/vendor/lib/pkg-config:$BUILD_DIR/.heroku/vendor/lib/pkg-config
