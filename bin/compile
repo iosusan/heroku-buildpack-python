@@ -18,6 +18,30 @@ CACHE_DIR=$2
 ENV_FILE=$3
 
 
+## install graphviz
+echo "-----> Downloading graphviz"
+# need to download graphviz binary and dependencies
+GRAPHVIZ_SOURCE_URL="http://www.graphviz.org/pub/graphviz/stable/SOURCES/graphviz-2.34.0.tar.gz"
+GRAPHVIZ_WORKDIR="tmp"
+mkdir -p $1/$GRAPHVIZ_WORKDIR
+cd $1/$GRAPHVIZ_WORKDIR
+curl -O $GRAPHVIZ_BINARY > /dev/null 2>&1
+tar zxvf graphviz-2.28.0.tar.gz > /dev/null 2>&1
+cd graphviz-2.34.0
+echo "-----> Configuring graphviz"
+./configure --prefix=$CACHE_DIR/.tools/graphviz > /dev/null 2>&1
+echo "-----> Compiling graphviz"
+make -j5 >/dev/null 2>&1
+echo "-----> Installing graphviz"
+make install > /dev/null 2>&1
+echo "gaphviz installed" | indent
+
+echo "-----> Adding binaries to path"
+export PATH=$PATH:$HOME/tools/graphviz/bin
+
+
+##
+
 CACHED_DIRS=".heroku"
 
 # Static configurations for virtualenv caches.
