@@ -40,13 +40,13 @@ make install > /dev/null 2>&1
 echo "-> INSTALLED" 
 
 echo "-----> Adding binaries to path"
-echo "---------> creating bin dir /app/.tools/graphviz/bin"
-mkdir -p /app/.tools/graphviz/bin
+echo "---------> creating bin dir $1/.tools/graphviz/bin"
+mkdir -p $1/.tools/graphviz/bin
 echo "---------> copying files"
-cp $CACHE_DIR/.tools/graphviz/bin/* /app/.tools/graphviz/bin/
-ls /app/.tools/graphviz/bin/
+cp $CACHE_DIR/.tools/graphviz/bin/* $1/.tools/graphviz/bin/
+ls $1/.tools/graphviz/bin/
 echo "---------> exporting updated PATH"
-export PATH=$PATH:/app/.tools/graphviz/bin
+export PATH=$PATH:$1/.tools/graphviz/bin
 
 
 ##
