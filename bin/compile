@@ -19,6 +19,20 @@ ENV_FILE=$3
 
 
 ## install graphviz
+echo "-----> downloading GNU GTS"
+mkdir -p $1/tmp
+cd $1/tmp
+curl -L http://downloads.sourceforge.net/project/gts/gts/0.7.6/gts-0.7.6.tar.gz > gts-0.7.6.tar.gz
+echo "-----> untarring gts-0.7.6.tar.gz"
+tar zxvf gts-0.7.6.tar.gz
+cd gts-0.7.6
+echo "--------> configuring GTS"
+./configure --prefix=$1/.tools/gts > /dev/null 2>&1
+echo "--------> Compiling GTS"
+make -j5 > /dev/null 2>&1
+echo "--------> installing GTS"
+make install
+echo "-> INSTALLED"
 echo "-----> Downloading graphviz"
 # need to download graphviz binary and dependencies
 GRAPHVIZ_SOURCE_URL="http://www.graphviz.org/pub/graphviz/stable/SOURCES/graphviz-2.34.0.tar.gz"
@@ -120,7 +134,7 @@ export LANG=en_US.UTF-8
 export C_INCLUDE_PATH=/app/.heroku/vendor/include:$BUILD_DIR/.heroku/vendor/include
 export CPLUS_INCLUDE_PATH=/app/.heroku/vendor/include:$BUILD_DIR/.heroku/vendor/include
 export LIBRARY_PATH=/app/.heroku/vendor/lib:$BUILD_DIR/.heroku/vendor/lib:$1/.tools/graphviz/lib
-export LD_LIBRARY_PATH=/app/.heroku/vendor/lib:$BUILD_DIR/.heroku/vendor/lib:$1/.tools/graphviz/lib
+export LD_LIBRARY_PATH=/app/.heroku/vendor/lib:$BUILD_DIR/.heroku/vendor/lib:$1/.tools/graphviz/lib:$1/.tools/gts/lib
 export PKG_CONFIG_PATH=/app/.heroku/vendor/lib/pkg-config:$BUILD_DIR/.heroku/vendor/lib/pkg-config
 
 # Switch to the repo's context.
@@ -268,7 +282,7 @@ set-env PATH '$HOME/.heroku/python/bin:$PATH'
 set-env PYTHONUNBUFFERED true
 set-env PYTHONHOME /app/.heroku/python
 set-default-env LIBRARY_PATH /app/.heroku/vendor/lib
-set-default-env LD_LIBRARY_PATH /app/.heroku/vendor/lib:/app/.tools/graphviz/lib
+set-default-env LD_LIBRARY_PATH /app/.heroku/vendor/lib:/app/.tools/graphviz/lib:/app/.tools/gts/lib
 set-default-env LANG en_US.UTF-8
 set-default-env PYTHONHASHSEED random
 set-default-env PYTHONPATH /app/
