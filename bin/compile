@@ -23,6 +23,7 @@ echo "-----> Downloading graphviz"
 # need to download graphviz binary and dependencies
 GRAPHVIZ_SOURCE_URL="http://www.graphviz.org/pub/graphviz/stable/SOURCES/graphviz-2.34.0.tar.gz"
 GRAPHVIZ_WORKDIR="tmp"
+GRAPHVIZ_INSTALLDIR="vendor/graphviz"
 echo "--------> creating dir $1/$GRAPHVIZ_WORKDIR"
 mkdir -p $1/$GRAPHVIZ_WORKDIR
 cd $1/$GRAPHVIZ_WORKDIR
@@ -32,19 +33,19 @@ echo "--------> done, untarring"
 tar zxvf graphviz-2.34.0.tar.gz > /dev/null 2>&1
 cd graphviz-2.34.0
 echo "-----> Configuring graphviz with prefix $CACHE_DIR/.tools/graphviz"
-./configure --prefix=$CACHE_DIR/.tools/graphviz > /dev/null 2>&1
+./configure --prefix=$1/.tools/graphviz --enable-shared=yes --enable-static=yes > /dev/null 2>&1
 echo "-----> Compiling graphviz"
 make -j5 >/dev/null 2>&1
 echo "-----> Installing graphviz"
 make install > /dev/null 2>&1
 echo "-> INSTALLED" 
 
-echo "-----> Adding binaries to path"
-echo "---------> creating bin dir $1/.tools/graphviz/bin"
-mkdir -p $1/.tools/graphviz/bin
-echo "---------> copying files"
-cp $CACHE_DIR/.tools/graphviz/bin/* $1/.tools/graphviz/bin/
-ls $1/.tools/graphviz/bin/
+#echo "-----> Adding binaries to path"
+#echo "---------> creating bin dir $1/.tools/graphviz/bin"
+#mkdir -p $1/.tools/graphviz/bin
+#echo "---------> copying files"
+#cp $CACHE_DIR/.tools/graphviz/bin/* $1/.tools/graphviz/bin/
+#ls $1/.tools/graphviz/bin/
 echo "---------> exporting updated PATH"
 export PATH=$PATH:$1/.tools/graphviz/bin
 
