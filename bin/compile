@@ -32,6 +32,8 @@ echo "--------> Compiling GTS"
 make -j5 > /dev/null 2>&1
 echo "--------> installing GTS"
 make install > /dev/null 2>&1
+echo "--------> cleaning up"
+# rm -Rf 
 echo "-> INSTALLED"
 echo "-----> Downloading graphviz"
 # need to download graphviz binary and dependencies
@@ -133,7 +135,7 @@ export PYTHONUNBUFFERED=1
 export LANG=en_US.UTF-8
 export C_INCLUDE_PATH=/app/.heroku/vendor/include:$BUILD_DIR/.heroku/vendor/include
 export CPLUS_INCLUDE_PATH=/app/.heroku/vendor/include:$BUILD_DIR/.heroku/vendor/include
-export LIBRARY_PATH=/app/.heroku/vendor/lib:$BUILD_DIR/.heroku/vendor/lib:$1/.tools/graphviz/lib
+export LIBRARY_PATH=/app/.heroku/vendor/lib:$BUILD_DIR/.heroku/vendor/lib:$1/.tools/graphviz/lib:$1/.tools/gts/lib
 export LD_LIBRARY_PATH=/app/.heroku/vendor/lib:$BUILD_DIR/.heroku/vendor/lib:$1/.tools/graphviz/lib:$1/.tools/gts/lib
 export PKG_CONFIG_PATH=/app/.heroku/vendor/lib/pkg-config:$BUILD_DIR/.heroku/vendor/lib/pkg-config
 
@@ -281,7 +283,7 @@ bpwatch stop collectstatic
 set-env PATH '$HOME/.heroku/python/bin:$PATH'
 set-env PYTHONUNBUFFERED true
 set-env PYTHONHOME /app/.heroku/python
-set-default-env LIBRARY_PATH /app/.heroku/vendor/lib
+set-default-env LIBRARY_PATH /app/.heroku/vendor/lib:/app/.tools/graphviz/lib:/app/.tools/gts/lib
 set-default-env LD_LIBRARY_PATH /app/.heroku/vendor/lib:/app/.tools/graphviz/lib:/app/.tools/gts/lib
 set-default-env LANG en_US.UTF-8
 set-default-env PYTHONHASHSEED random
