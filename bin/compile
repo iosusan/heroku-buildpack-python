@@ -23,9 +23,12 @@ echo "-----> Downloading graphviz"
 # need to download graphviz binary and dependencies
 GRAPHVIZ_SOURCE_URL="http://www.graphviz.org/pub/graphviz/stable/SOURCES/graphviz-2.34.0.tar.gz"
 GRAPHVIZ_WORKDIR="tmp"
+echo "--------> creating dir $1/$GRAPHVIZ_WORKDIR"
 mkdir -p $1/$GRAPHVIZ_WORKDIR
 cd $1/$GRAPHVIZ_WORKDIR
+echo "--------> downloading $GRAPHVIZ_BINARY"
 curl -O $GRAPHVIZ_BINARY > /dev/null 2>&1
+echo "--------> done, untarring"
 tar zxvf graphviz-2.28.0.tar.gz > /dev/null 2>&1
 cd graphviz-2.34.0
 echo "-----> Configuring graphviz"
