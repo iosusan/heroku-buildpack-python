@@ -22,42 +22,42 @@ ENV_FILE=$3
 echo "-----> Downloading GNU GTS"
 GTS_WORKDIR="tmp_gts"
 echo "--------> creating dir $1/$GTS_WORKDIR"
-mkdir -p $1/$GTS_WORKDIR
-cd $1/$GTS_WORKDIR
+mkdir -p $BUILD_DIR/$GTS_WORKDIR
+cd $BUILD_DIR/$GTS_WORKDIR
 curl -L http://downloads.sourceforge.net/project/gts/gts/0.7.6/gts-0.7.6.tar.gz > gts-0.7.6.tar.gz
 echo "--------> Untarring gts-0.7.6.tar.gz"
 tar zxvf gts-0.7.6.tar.gz > /dev/null 2>&1
 cd gts-0.7.6
-echo "-----> Configuring GTS with prefix $1/.tools/gts"
-./configure --prefix=$1/.tools/gts > /dev/null 2>&1
+echo "-----> Configuring GTS with prefix $CACHE_DIR/.tools/gts"
+./configure --prefix=$CACHE_DIR/.tools/gts > /dev/null 2>&1
 echo "-----> Compiling GTS"
 make -j5 > /dev/null 2>&1
 echo "-----> installing GTS"
 make install > /dev/null 2>&1
-echo "--------> cleaning up $1/$GTS_WORKDIR"
-# rm -Rf $1/$GTS_WORKDIR
+echo "--------> cleaning up $BUILD_DIR/$GTS_WORKDIR"
+# rm -Rf $BUILD_DIR/$GTS_WORKDIR
 echo "-> INSTALLED"
 echo "-----> Downloading graphviz"
 # need to download graphviz binary and dependencies
 GRAPHVIZ_SOURCE_URL="http://www.graphviz.org/pub/graphviz/stable/SOURCES/graphviz-2.34.0.tar.gz"
 GRAPHVIZ_WORKDIR="tmp_graphviz"
 GRAPHVIZ_INSTALLDIR="vendor/graphviz"
-echo "--------> creating dir $1/$GRAPHVIZ_WORKDIR"
-mkdir -p $1/$GRAPHVIZ_WORKDIR
-cd $1/$GRAPHVIZ_WORKDIR
+echo "--------> creating dir $BUILD_DIR/$GRAPHVIZ_WORKDIR"
+mkdir -p $BUILD_DIR/$GRAPHVIZ_WORKDIR
+cd $BUILD_DIR/$GRAPHVIZ_WORKDIR
 echo "--------> downloading $GRAPHVIZ_SOURCE_URL"
 curl -O $GRAPHVIZ_SOURCE_URL > /dev/null 2>&1
 echo "--------> done, untarring"
 tar zxvf graphviz-2.34.0.tar.gz > /dev/null 2>&1
 cd graphviz-2.34.0
-echo "-----> Configuring graphviz with prefix $CACHE_DIR/.tools/graphviz"
-./configure --prefix=$1/.tools/graphviz --enable-shared=yes --enable-static=yes --with-gts=yes > /dev/null 2>&1
+echo "-----> Configuring graphviz with prefix $1/.tools/graphviz"
+./configure --prefix=$CACHE_DIR/.tools/graphviz --enable-shared=yes --enable-static=yes --with-gts=yes > /dev/null 2>&1
 echo "-----> Compiling graphviz"
 make -j5 >/dev/null 2>&1
 echo "-----> Installing graphviz"
 make install > /dev/null 2>&1
-echo "--------> cleaning up $1/$GRAPHVIZ_WORKDIR"
-rm -Rf $1/$GRAPHVIZ_WORKDIR
+echo "--------> cleaning up $BUILD_DIR/$GRAPHVIZ_WORKDIR"
+rm -Rf $BUILD_DIR/$GRAPHVIZ_WORKDIR
 echo "-> INSTALLED" 
 
 echo "---------> exporting updated PATH"
