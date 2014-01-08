@@ -28,7 +28,7 @@ curl -L http://downloads.sourceforge.net/project/gts/gts/0.7.6/gts-0.7.6.tar.gz 
 echo "--------> Untarring gts-0.7.6.tar.gz"
 tar zxvf gts-0.7.6.tar.gz > /dev/null 2>&1
 cd gts-0.7.6
-echo "-----> Configuring GTS with prefix $CACHE_DIR/.tools/gts"
+echo "-----> Configuring GTS with prefix $BUILD_DIR/.tools/gts"
 ./configure --prefix=$BUILD_DIR/.tools/gts > /dev/null 2>&1
 echo "-----> Compiling GTS"
 make -j5 > /dev/null 2>&1
@@ -57,7 +57,7 @@ curl -O $GRAPHVIZ_SOURCE_URL > /dev/null 2>&1
 echo "--------> done, untarring"
 tar zxvf graphviz-2.34.0.tar.gz > /dev/null 2>&1
 cd graphviz-2.34.0
-echo "-----> Configuring graphviz with prefix $CACHE_DIR/.tools/graphviz"
+echo "-----> Configuring graphviz with prefix $BUILD_DIR/.tools/graphviz"
 ./configure --prefix=$BUILD_DIR/.tools/graphviz --enable-shared=yes --enable-static=yes --with-gts=yes > /dev/null 2>&1
 echo "-----> Compiling graphviz"
 make -j5 >/dev/null 2>&1
