@@ -28,21 +28,21 @@ curl -L http://downloads.sourceforge.net/project/gts/gts/0.7.6/gts-0.7.6.tar.gz 
 echo "--------> Untarring gts-0.7.6.tar.gz"
 tar zxvf gts-0.7.6.tar.gz > /dev/null 2>&1
 cd gts-0.7.6
-echo "-----> Configuring GTS with prefix $BUILD_DIR/.tools/gts"
-./configure --prefix=$BUILD_DIR/.tools/gts > /dev/null 2>&1
+echo "-----> Configuring GTS with prefix /app/.tools/gts"
+./configure --prefix=/app/.tools/gts > /dev/null 2>&1
 echo "-----> Compiling GTS"
 make -j5 > /dev/null 2>&1
-echo "-----> installing GTS to $BUILD_DIR/.tools/gts"
+echo "-----> installing GTS to /app/.tools/gts"
 make install > /dev/null 2>&1
 echo "--------> cleaning up $BUILD_DIR/$GTS_WORKDIR"
-#rm -Rf $BUILD_DIR/$GTS_WORKDIR
+rm -Rf $BUILD_DIR/$GTS_WORKDIR
 echo "-> INSTALLED"
 
 # once build, add GTS lib to LD_LIBRARY_PATH
-export C_INCLUDE_PATH=$BUILD_DIR/.tools/gts/include
-export CPLUS_INCLUDE_PATH=$BUILD_DIR/.tools/gts/include
-export LIBRARY_PATH=$BUILD_DIR/.tools/gts/lib
-export LD_LIBRARY_PATH=$BUILD_DIR/.tools/gts/lib
+export C_INCLUDE_PATH=/app/.tools/gts/include
+export CPLUS_INCLUDE_PATH=/app/.tools/gts/include
+export LIBRARY_PATH=/app/.tools/gts/lib
+export LD_LIBRARY_PATH=/app/.tools/gts/lib
 
 echo "-----> Downloading graphviz"
 # need to download graphviz binary and dependencies
@@ -57,18 +57,18 @@ curl -O $GRAPHVIZ_SOURCE_URL > /dev/null 2>&1
 echo "--------> done, untarring"
 tar zxvf graphviz-2.34.0.tar.gz > /dev/null 2>&1
 cd graphviz-2.34.0
-echo "-----> Configuring graphviz with prefix $BUILD_DIR/.tools/graphviz"
-./configure --prefix=$BUILD_DIR/.tools/graphviz --enable-shared=no --enable-static=yes --with-gts=yes > /dev/null 2>&1
+echo "-----> Configuring graphviz with prefix /app/.tools/graphviz"
+./configure --prefix=/app/.tools/graphviz --enable-shared=no --enable-static=yes --with-gts=yes > /dev/null 2>&1
 echo "-----> Compiling graphviz"
 make -j5 >/dev/null 2>&1
-echo "-----> Installing graphviz to $BUILD_DIR/.tools/graphviz"
+echo "-----> Installing graphviz to /app/.tools/graphviz"
 make install > /dev/null 2>&1
 echo "--------> cleaning up $BUILD_DIR/$GRAPHVIZ_WORKDIR"
 #rm -Rf $BUILD_DIR/$GRAPHVIZ_WORKDIR
 echo "-> INSTALLED" 
 
-echo "---------> exporting updated PATH=$PATH:$BUILD_DIR/.tools/graphviz/bin:$BUILD_DIR/.tools/gts/bin"
-export PATH=$PATH:$BUILD_DIR/.tools/graphviz/bin:$BUILD_DIR/.tools/gts/bin
+echo "---------> exporting updated PATH=$PATH:/app/.tools/graphviz/bin:/app/.tools/gts/bin"
+export PATH=$PATH:/app/.tools/graphviz/bin:/app/.tools/gts/bin
 
 
 ##
