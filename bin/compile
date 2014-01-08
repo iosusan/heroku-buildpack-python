@@ -31,7 +31,7 @@ curl -O $GRAPHVIZ_SOURCE_URL > /dev/null 2>&1
 echo "--------> done, untarring"
 tar zxvf graphviz-2.34.0.tar.gz > /dev/null 2>&1
 cd graphviz-2.34.0
-echo "-----> Configuring graphviz"
+echo "-----> Configuring graphviz with prefix $CACHE_DIR/.tools/graphviz"
 ./configure --prefix=$CACHE_DIR/.tools/graphviz > /dev/null 2>&1
 echo "-----> Compiling graphviz"
 make -j5 >/dev/null 2>&1
