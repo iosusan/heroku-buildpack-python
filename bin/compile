@@ -22,7 +22,7 @@ ENV_FILE=$3
 echo "-----> Downloading GNU GTS"
 mkdir -p $1/tmp
 cd $1/tmp
-curl -L http://downloads.sourceforge.net/project/gts/gts/0.7.6/gts-0.7.6.tar.gz > gts-0.7.6.tar.gz > /dev/null 2>&1
+curl -L http://downloads.sourceforge.net/project/gts/gts/0.7.6/gts-0.7.6.tar.gz > gts-0.7.6.tar.gz
 echo "-----> Untarring gts-0.7.6.tar.gz"
 tar zxvf gts-0.7.6.tar.gz > /dev/null 2>&1
 cd gts-0.7.6
