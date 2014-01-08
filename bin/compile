@@ -40,7 +40,7 @@ make install > /dev/null 2>&1
 echo "-> INSTALLED" 
 
 echo "-----> Adding binaries to path"
-export PATH=$PATH:$HOME/tools/graphviz/bin
+export PATH=$PATH:$CACHE_DIR/.tools/graphviz/bin
 
 
 ##
