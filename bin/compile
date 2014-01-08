@@ -64,7 +64,7 @@ make -j5 >/dev/null 2>&1
 echo "-----> Installing graphviz"
 make install > /dev/null 2>&1
 echo "--------> cleaning up $BUILD_DIR/$GRAPHVIZ_WORKDIR"
-rm -Rf $BUILD_DIR/$GRAPHVIZ_WORKDIR
+#rm -Rf $BUILD_DIR/$GRAPHVIZ_WORKDIR
 echo "-> INSTALLED" 
 
 echo "---------> exporting updated PATH"
