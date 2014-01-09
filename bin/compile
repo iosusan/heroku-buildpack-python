@@ -177,19 +177,32 @@ fi
 echo "finished downloads"
 ls $DOWNLOAD_DIR
 
-####################################
-### uncompress files if required ###
-####################################
-echo "cached uncompressed"
-echo "gts"
-
+########################
+### uncompress files ###
+########################
 # cp downloaded files to workdirs and uncompress them
 prepare_workdir $DOWNLOAD_DIR $GTS_BINARY $GTS_WORKDIR
 prepare_workdir $DOWNLOAD_DIR $GRAPHVIZ_BINARY $GRAPHVIZ_WORKDIR
 
+#####################
+### compile files ###
+#####################
+echo "cached compiled"
+
 BASE_DIR=`pwd`
-# compile GTS
-compile $GTS_WORKDIR $BASE_DIR
+echo "gts"
+if [ ! -d $CACHE_DIR/compiled/gts ]; then
+ # compile GTS
+ echo "not cached, compiling"
+ compile $GTS_WORKDIR $BASE_DIR
+ # copy to cache dir
+ cp -R $BASE_DIR/$GTS_INSTALLDIR $CACHE_DIR/compiled/gts
+else
+ # already cached, copy from cache
+ echo "cached"
+ cp -R $CACHE_DIR/compiled/gts $BASE_DIR/$GTS_INSTALLDIR
+fi
+
 # once installed, update library path
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:"$BASE_DIR/$GTS_LIBDIR"
 export LIBRARY_PATH=$LIBRARY_PATH:"$BASE_DIR/$GTS_LIBDIR"
@@ -197,10 +210,19 @@ export C_INCLUDE_PATH=$C_INCLUDE_PATH:"$BASE_DIR/$GTS_INCLUDEDIR"
 export CPLUS_INCLUDE_PATH=$CPLUS_INCLUDE_PATH:"$BASE_DIR/$GTS_INCLUDEDIR"
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:"$BASE_DIR/$GTS_PKGDIR"
 export PATH=$PATH:"$BASE_DIR/$GTS_BINDIR"
-# check that it is installed
 
-# compile graphviz
-compile $GRAPHVIZ_WORKDIR $BASE_DIR
+echo "graphviz"
+if [! -d $CACHE_DIR/compiled/graphviz ]; then
+ echo "not cached, compiling"
+ # compile graphviz
+ compile $GRAPHVIZ_WORKDIR $BASE_DIR
+ # copy to cache dir
+ cp -R $BASE_DIR/$GAPHVIZ_INSTALLDIR $CACHE_DIR/compiled/graphviz
+else
+ # already cached, copy from cache
+ echo "cached"
+ cp -R $CACHE_DIR/compiled/graphviz $BASE_DIR/$GRAPHVIZ_INSTALLDIR
+fi
 # done, update envvars again
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:"$BASE_DIR/$GRAPHVIZ_LIBDIR"
 export LIBRARY_PATH=$LIBRARY_PATH:"$BASE_DIR/$GRAPHVIZ_LIBDIR"
@@ -215,9 +237,9 @@ cp -R $INSTALLDIR $BUILD_DIR/tools
 # now i have all my stuff under .tools dir
 # be careful to add the correct PATH to the application PATH=$PATH:/app/.tools/graphviz/bin
 
-echo ""
+echo " libs compiled"
 echo "#############################"
-echo ""
+echo " let's go for python environment"
 
 
 echo "------> installing PYTHON"
