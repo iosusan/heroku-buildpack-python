@@ -71,7 +71,6 @@ download_sw() {
 	echo "checking download $3/$1"
 	if [ ! -f "$3/$1" ]; then
 		# GTS requires curl -L xx > file
-		# graphviz does not.. 
 		# http://tldp.org/HOWTO/Bash-Prog-Intro-HOWTO-11.html -> comparing strings using double quotes avoids parse errors
 		if [ "$1" == "gts-0.7.6.tar.gz" ]; then
 			echo " downloading GTS from $GTS_URL/$GTS_BINARY to $s/$GTS_BINARY"
@@ -119,12 +118,12 @@ compile() {
 		echo " done!"
 		
 	else
-		echo "compiling GAPHVIZ"
+		echo "compiling GRAPHVIZ"
 		# check that libgts is available
 		cd "graphviz-2.34.0"
 		echo " configuring with prefix=$2/$GRAPHVIZ_INSTALLDIR --enable-shared=no --enable-static=yes --with-gts=yes"
 		create_dir $GRAPHVIZ_INSTALLDIR
-		configure --prefix=$GRAPHVIZ_INSTALLDIR --enable-shared=no --enable-static=yes --with-gts=yes > /dev/null 2>&1
+		configure --prefix="$2$GRAPHVIZ_INSTALLDIR" --enable-shared=no --enable-static=yes --with-gts=yes > /dev/null 2>&1
 		echo " making"
 		make -j5  > /dev/null 2>&1
 		echo " installing"
