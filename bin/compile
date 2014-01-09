@@ -143,12 +143,45 @@ if [ ! -d $DOWNLOAD_DIR ]; then
 fi
 
 echo "------> installing GRAPHVIZ"
+##################################
+### download files if required ###
+##################################
+echo "checking if anything cached"
+echo "cached downloads"
+echo "gts"
+if [ ! -d $CACHE_DIR/downloads/gts ];then
+ # download sw to dir
+ echo "not cached, downloading"
+ download_sw $GTS_BINARY $GTS_URL $DOWNLOAD_DIR
+ # move to cache dir
+ create_dir $CACHE_DIR/downloads/gts
+ mv $DOWNLOAD_DIR/$GTS_BINARY $CACHE_DIR/downloads/gts
+ ls $CACHE_DIR/downloads/gts
+else
+ echo "cached"
+ # already cached, copy to $DOWNLOAD_DIR
+ cp $CACHE_DIR/downloads/gts/$GTS_BINARY $DOWNLOAD_DIR/
+fi
 
+echo "graphviz"
+if [ ! -d $CACHE_DIR/downloads/graphviz ]; then
+ echo "not cached, downloading"
+ download_sw $GRAPHVIZ_BINARY $GRAPHVIZ_URL $DOWNLOAD_DIR
+ # move to cache dir
+ create_dir $CACHE_DIR/downloads/graphviz
+ mv $DOWNLOAD_DIR/$GRAPHVIZ_BINARY $CACHE_DIR/downloads/graphviz
+ ls $CACHE_DIR/downloads/graphviz
+else
+ echo "cached"
+ cp $CACHE_DIR/downloads/graphviz/$GRAPHVIZ_BINARY $DOWNLOAD_DIR/
+fi
+echo "finished downloads"
 
-
-# download sw to dir
-download_sw $GTS_BINARY $GTS_URL $DOWNLOAD_DIR
-download_sw $GRAPHVIZ_BINARY $GRAPHVIZ_URL $DOWNLOAD_DIR
+####################################
+### uncompress files if required ###
+####################################
+echo "cached uncompressed"
+echo "gts"
 
 # cp downloaded files to workdirs and uncompress them
 prepare_workdir $DOWNLOAD_DIR $GTS_BINARY $GTS_WORKDIR
