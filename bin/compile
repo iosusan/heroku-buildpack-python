@@ -213,7 +213,7 @@ export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:"$BASE_DIR/$GTS_PKGDIR"
 export PATH=$PATH:"$BASE_DIR/$GTS_BINDIR"
 
 echo "graphviz"
-if [! -d $CACHE_DIR/compiled/graphviz ]; then
+if [ ! -d $CACHE_DIR/compiled/graphviz ]; then
  echo "not cached, compiling"
  # compile graphviz
  compile $GRAPHVIZ_WORKDIR $BASE_DIR
