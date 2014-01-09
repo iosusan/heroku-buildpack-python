@@ -156,7 +156,6 @@ if [ ! -d $CACHE_DIR/downloads/gts ];then
  # move to cache dir
  create_dir $CACHE_DIR/downloads/gts
  mv $DOWNLOAD_DIR/$GTS_BINARY $CACHE_DIR/downloads/gts
- ls $CACHE_DIR/downloads/gts
 else
  echo "cached"
  # already cached, copy to $DOWNLOAD_DIR
@@ -170,12 +169,12 @@ if [ ! -d $CACHE_DIR/downloads/graphviz ]; then
  # move to cache dir
  create_dir $CACHE_DIR/downloads/graphviz
  mv $DOWNLOAD_DIR/$GRAPHVIZ_BINARY $CACHE_DIR/downloads/graphviz
- ls $CACHE_DIR/downloads/graphviz
 else
  echo "cached"
  cp $CACHE_DIR/downloads/graphviz/$GRAPHVIZ_BINARY $DOWNLOAD_DIR/
 fi
 echo "finished downloads"
+ls $DOWNLOAD_DIR
 
 ####################################
 ### uncompress files if required ###
