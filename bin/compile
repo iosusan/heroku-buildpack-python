@@ -124,7 +124,7 @@ compile() {
 		cd "graphviz-2.34.0"
 		echo " configuring with prefix=$2/$GRAPHVIZ_INSTALLDIR --enable-shared=no --enable-static=yes --with-gts=yes"
 		create_dir $GRAPHVIZ_INSTALLDIR
-		configure --prefix=$GAPHVIZ_INSTALLDIR --enable-shared=no --enable-static=yes --with-gts=yes > /dev/null 2>&1
+		configure --prefix=$GRAPHVIZ_INSTALLDIR --enable-shared=no --enable-static=yes --with-gts=yes > /dev/null 2>&1
 		echo " making"
 		make -j5  > /dev/null 2>&1
 		echo " installing"
