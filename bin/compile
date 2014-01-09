@@ -35,15 +35,15 @@ GRAPHVIZ_BINARY="graphviz-2.34.0.tar.gz"
 GRAPHVIZ_URL="http://www.graphviz.org/pub/graphviz/stable/SOURCES"
 
 
-function create_dir {
+create_dir() {
 	echo "checking dir $1"
 	if [ ! -d "$1" ]; then
 		echo "$1 not found, creating..."
-		mkdir -p $1
+		mkdir -p "$1"
 	fi
 }
 
-function download_sw {
+download_sw() {
 	#$1 is the filename
 	#$2 is the url
 	#$3 is the dest dir
