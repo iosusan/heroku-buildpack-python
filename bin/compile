@@ -26,23 +26,36 @@ INSTALLDIR="vendor/tools"
 
 GTS_WORKDIR="$WORKDIR/gts"
 GTS_INSTALLDIR="$INSTALLDIR/gts"
+GTS_LIBDIR="$GTS_INSTALLDIR/lib"
+GTS_INCLUDEDIR="$GTS_INSTALLDIR/include"
+GTS_BINDIR="$GTS_INSTALLDIR/bin"
+GTS_PKGDIR="$GTS_LIBDIR/pkgconfig"
 GTS_BINARY="gts-0.7.6.tar.gz"
 GTS_URL="http://downloads.sourceforge.net/project/gts/gts/0.7.6"
 
 GRAPHVIZ_WORKDIR="$WORKDIR/graphviz"
 GRAPHVIZ_INSTALLDIR="$INSTALLDIR/graphviz"
+GRAPHVIZ_LIBDIR="$GRAPHVIZ_INSTALLDIR/lib"
+GRAPHVIZ_INCLUDEDIR="$GRAPHVIZ_INSTALLDIR/include"
+GRAPHVIZ_BINDIR="$GRAPHVIZ_INSTALLDIR/bin"
 GRAPHVIZ_BINARY="graphviz-2.34.0.tar.gz"
 GRAPHVIZ_URL="http://www.graphviz.org/pub/graphviz/stable/SOURCES"
 
 
+###
+### this function checks if dir exists, creates it (although mkdir -p does it by itself i think.. 
+###
 create_dir() {
-	echo "checking dir $1"
+	echo " (checking dir $1)"
 	if [ ! -d "$1" ]; then
-		echo "$1 not found, creating..."
+		echo " $1 not found, creating..."
 		mkdir -p "$1"
 	fi
 }
 
+###
+### this function downloads the tarballs
+###
 download_sw() {
 	#$1 is the filename
 	#$2 is the url
@@ -52,16 +65,70 @@ download_sw() {
 		# GTS requires curl -L xx > file
 		# graphviz does not.. 
 		# http://tldp.org/HOWTO/Bash-Prog-Intro-HOWTO-11.html -> comparing strings using double quotes avoids parse errors
-		if [ "$1"="gts-0.7.6.tar.gz" ]; then
-			echo "downloading from $GTS_URL/$GTS_BINARY to $s/$GTS_BINARY"
+		if [ "$1" == "gts-0.7.6.tar.gz" ]; then
+			echo " downloading GTS from $GTS_URL/$GTS_BINARY to $s/$GTS_BINARY"
 			curl -L $GTS_URL/$GTS_BINARY > $3/$GTS_BINARY
 		else
-			echo "downloading from $GRAPHVIZ_URL/$GRAPHVIZ_BINARY to $3/$GRAPHVIZ_BINARY"
+			echo " downloading GRAPHVIZ from $GRAPHVIZ_URL/$GRAPHVIZ_BINARY to $3/$GRAPHVIZ_BINARY"
 			cd $3 && { curl -O "$GRAPHVIZ_URL/$GRAPHVIZ_BINARY" ; cd -; }
 		fi
 	fi
 }
 
+###
+### this prepares the tarballs for compilation
+###
+prepare_workdir() {
+	# $1 is the sourcedir
+	# $2 is the filename
+	# $3 is the destdir
+	create_dir $3
+	cp "$1/$2" $3
+	cd $3
+	tar zxvf $2 > /dev/null 2>&1
+	cd -
+}
+
+###
+### this compiles and installs 
+###
+compile() {
+	# $1 is the workdir
+	# $2 is the starting dir
+	cd $1
+	if [ "$1" == "$GTS_WORKDIR" ]; then
+		echo "compiling GTS"
+		cd "gts-0.7.6"
+		echo " configuring with prefix=$2/$GTS_INSTALLDIR"
+		create_dir $GTS_INSTALLDIR
+		configure --prefix="$2/$GTS_INSTALLDIR" > /dev/null 2>&1
+		echo " making"
+		make -j5 > /dev/null 2>&1
+		echo " installing"
+		make install > /dev/null 2>&1
+		echo " cleaning temporary stuff: $GTS_WORKDIR"
+		rm -Rf $GTS_WORKDIR
+		echo " done!"
+		
+	else
+		echo "compiling GAPHVIZ"
+		# check that libgts is available
+		cd "graphviz-2.34.0"
+		echo " configuring with prefix=$2/$GRAPHVIZ_INSTALLDIR --enable-shared=no --enable-static=yes --with-gts=yes"
+		create_dir $GRAPHVIZ_INSTALLDIR
+		configure --prefix=$GAPHVIZ_INSTALLDIR --enable-shared=no --enable-static=yes --with-gts=yes > /dev/null 2>&1
+		echo " making"
+		make -j5  > /dev/null 2>&1
+		echo " installing"
+		make install > /dev/null 2>&1
+		echo "cleaning temporary stuff"
+		rm -Rf $GRAPHVIZ_WORKDIR
+		echo "done!"
+	fi
+	cd $2
+}
+
+#####
 
 # create sw dirs
 if [ ! -d $DOWNLOAD_DIR ]; then
@@ -72,7 +139,36 @@ fi
 download_sw $GTS_BINARY $GTS_URL $DOWNLOAD_DIR
 download_sw $GRAPHVIZ_BINARY $GRAPHVIZ_URL $DOWNLOAD_DIR
 
+# cp downloaded files to workdirs and uncompress them
+prepare_workdir $DOWNLOAD_DIR $GTS_BINARY $GTS_WORKDIR
+prepare_workdir $DOWNLOAD_DIR $GRAPHVIZ_BINARY $GRAPHVIZ_WORKDIR
 
+BASE_DIR=`pwd`
+# compile GTS
+compile $GTS_WORKDIR $BASE_DIR
+# once installed, update library path
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:"$BASE_DIR/$GTS_LIBDIR"
+export LIBRARY_PATH=$LIBRARY_PATH:"$BASE_DIR/$GTS_LIBDIR"
+export C_INCLUDE_PATH=$C_INCLUDE_PATH:"$BASE_DIR/$GTS_INCLUDEDIR"
+export CPLUS_INCLUDE_PATH=$CPLUS_INCLUDE_PATH:"$BASE_DIR/$GTS_INCLUDEDIR"
+export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:"$BASE_DIR/$GTS_PKGDIR"
+export PATH=$PATH:"$BASE_DIR/$GTS_BINDIR"
+# check that it is installed
+
+# compile graphviz
+compile $GRAPHVIZ_WORKDIR $BASE_DIR
+# done, update envvars again
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:"$BASE_DIR/$GRAPHVIZ_LIBDIR"
+export LIBRARY_PATH=$LIBRARY_PATH:"$BASE_DIR/$GRAPHVIZ_LIBDIR"
+export C_INCLUDE_PATH=$C_INCLUDE_PATH:"$BASE_DIR/$GRAPHVIZ_INCLUDEDIR"
+export CPLUS_INCLUDE_PATH=$CPLUS_INCLUDE_PATH:"$BASE_DIR/$GRAPHVIZ_INCLUDEDIR"
+export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:"$BASE_DIR/$GRAPHVIZ_PKGDIR"
+export PATH=$PATH:"$BASE_DIR/$GRAPHVIZ_BINDIR"
+
+
+echo ""
+echo "#############################"
+echo ""
 
 <<OLDSTUFF
 
