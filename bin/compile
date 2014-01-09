@@ -44,6 +44,7 @@ else
   echo "------> GTS already in cache dir"
 fi
 # move gts to .gts
+echo "creating .gts"
 mkdir -p .gts
 cp -R $CACHE_DIR/vendor/gts .gts
 
@@ -82,6 +83,7 @@ else
 fi
 
 # move graphviz to .graphviz
+echo "creating .graphviz"
 mkdir -p .graphviz
 cp -R $CACHE_DIR/vendor/graphviz .graphviz
 
@@ -91,7 +93,7 @@ cp -R $CACHE_DIR/vendor/graphviz .graphviz
 
 ##
 
-CACHED_DIRS=".heroku"
+CACHED_DIRS=(".heroku" ".gts" ".graphviz")
 
 # Static configurations for virtualenv caches.
 VIRTUALENV_LOC=".heroku/venv"
@@ -327,14 +329,14 @@ bpwatch start dump_cache
 bpwatch stop dump_cache
 
 # ### Fin.
-bpwatch start appdir_commit
-  deep-mv $BUILD_DIR $ORIG_BUILD_DIR
-bpwatch stop appdir_commit
+#bpwatch start appdir_commit
+#  deep-mv $BUILD_DIR $ORIG_BUILD_DIR
+#bpwatch stop appdir_commit
 
-bpwatch start anvil_appdir_commit
-  if [ "$SLUG_ID" ]; then
-    deep-mv $TMP_APP_DIR $APP_DIR
-  fi
+#bpwatch start anvil_appdir_commit
+#  if [ "$SLUG_ID" ]; then
+#    deep-mv $TMP_APP_DIR $APP_DIR
+#  fi
 
-bpwatch stop anvil_appdir_commit
-bpwatch stop compile
+#bpwatch stop anvil_appdir_commit
+#bpwatch stop compile
