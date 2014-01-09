@@ -245,7 +245,7 @@ cd $WORKING_DIR
 source $BIN_DIR/steps/pylibmc
 
 echo "installind dependencies with pip"
-/app/.heroku/python/bin/pip install -r requirements.txt --exists-action=w --src=./.heroku/src | cleanup  # | indent
+$WORKING_DIR/.heroku/python/bin/pip install -r requirements.txt --exists-action=w --src=./.heroku/src | cleanup  # | indent
 
 # Set context environment variables.
 set-env PATH '$HOME/.heroku/python/bin:$PATH'
