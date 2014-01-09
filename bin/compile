@@ -43,6 +43,14 @@ GRAPHVIZ_URL="http://www.graphviz.org/pub/graphviz/stable/SOURCES"
 
 
 ###
+### indent
+###
+indent() {
+	c='s/^/      /'
+}
+
+
+###
 ### this function checks if dir exists, creates it (although mkdir -p does it by itself i think.. 
 ###
 create_dir() {
@@ -120,7 +128,7 @@ compile() {
 		echo " making"
 		make -j5  > /dev/null 2>&1
 		echo " installing"
-		make install > /dev/null 2>&1
+		make install #> /dev/null 2>&1
 		echo "cleaning temporary stuff"
 		rm -Rf $GRAPHVIZ_WORKDIR
 		echo "done!"
