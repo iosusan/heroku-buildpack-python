@@ -47,9 +47,9 @@ else
 fi
 # move gts to .gts
 echo "creating gts"
-mkdir -p gts
-cp -R $CACHE_DIR/vendor/gts gts
-ls -la gts
+mkdir -p .gts
+cp -R $CACHE_DIR/vendor/gts .gts
+ls -la .gts
 
 # once build, add GTS lib to LD_LIBRARY_PATH
 export C_INCLUDE_PATH=$BUILD_DIR/gts/include
