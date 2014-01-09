@@ -316,7 +316,7 @@ WORKING_DIR=$(pwd)
 # check if required distribute and pip
 echo "installing distribute"
 cd $ROOT_DIR/vendor/distribute-$DISTRIBUTE_VERSION/
-python setup.py install &> dev/null
+python setup.py install &> /dev/null
 cd $WORKING_DIR
 
 echo "installing pip"
