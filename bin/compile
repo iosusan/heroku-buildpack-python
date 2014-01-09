@@ -242,7 +242,7 @@ cd $ROOT_DIR/vendor/pip-$PIP_VERSION/
 python setup.py install #&> /dev/null
 cd $WORKING_DIR
 
-source $BUN_DIR/steps/pylibmc
+source $BIN_DIR/steps/pylibmc
 
 echo "installind dependencies with pip"
 /app/.heroku/python/bin/pip install -r requirements.txt --exists-action=w --src=./.heroku/src | cleanup  # | indent
