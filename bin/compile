@@ -188,6 +188,77 @@ echo ""
 
 
 echo "------> installing PYTHON"
+
+unset GIT_DIR PYTHONHOME PYTHONPATH LD_LIBRARY__PATH LIBRARY_PATH
+
+export PATH=$BUILD_DIR/.heroku/python/bin:$BUILD_DIR/.heroku/vendor/bin:$PATH
+export PYTHONUNBUFFERED=1
+export LANG=en_US.UTF-8
+export C_INCLUDE_PATH=/app/.heroku/vendor/include:$BUILD_DIR/.heroku/vendor/include
+export CPLUS_INCLUDE_PATH=/app/.heroku/vendor/include:$BUILD_DIR/.heroku/vendor/include
+export LIBRARY_PATH=/app/.heroku/vendor/lib:$BUILD_DIR/.heroku/vendor/lib
+export LD_LIBRARY_PATH=/app/.heroku/vendor/lib:$BUILD_DIR/.heroku/vendor/lib
+export PKG_CONFIG_PATH=/app/.heroku/vendor/lib/pkg-config:$BUILD_DIR/.heroku/vendor/lib/pkg-config
+
+DEFAULT_PYTHON_VERSION="python-2.7.4"
+PYTHON_EXE="/app/.heroku/python/bin/python"
+PIP_VERSION="1.3.1"
+DISTRIBUTE_VERSION="0.6.36"
+
+
+cd $BUILD_DIR
+source $BIN_DIR/steps/hooks/pre_compile
+
+if [ ! -f requirements.txt ]; then
+	echo "no requirements.txt"
+	echo "-e ." > requirements.txt
+fi
+
+if [ ! -f runtime.txt ]; then
+	echo "no runtime.txt, assuming $DEFAULT_PYTHON_VERSION"
+	echo $DEFAULT_PYTHON_VERSION > runtime.txt
+fi
+
+mkdir .heroku
+PYTHON_VERSION=$(cat runtime.txt)
+echo "preparing python runtime"
+curl http://envy-versions.s3.amazonaws.com/$PYTHON_VERSION.tar.bz2 -s | tar jx &> /dev/null
+if [[ $? != 0 ]] ; then
+	echo "ERROR: requested runtime ($PYTHON_VERSION) was not found."
+	exit 1
+fi
+mv python .heroku/python
+echo $PYTHON_VERSION > .heroku/python-version
+
+WORKING_DIR=$(pwd)
+
+echo "installing distribute"
+cd $ROOT_DIR/vendor/distribute-$DISTRIBUTE_VERSIONi/
+python setup.py install & > dev/null
+cd $WORKING_DIR
+
+echo "installing pip"
+cd $ROOT_DIR/vendor/pip-$PIP_VERSION/
+python setup.py install %> /dev/null
+cd $WORKING_DIR
+
+source $BUN_DIR/steps/pylibmc
+
+echo "installind dependencies with pip"
+/app/.heroku/python/bin/pip install -r requirements.txt --exists-action=w --src=./.heroku/src | cleanup  # | indent
+
+# Set context environment variables.
+set-env PATH '$HOME/.heroku/python/bin:$PATH'
+set-env PYTHONUNBUFFERED true
+set-env PYTHONHOME /app/.heroku/python
+set-default-env LIBRARY_PATH /app/.heroku/vendor/lib:/app/.graphviz/lib:/app/.gts/lib
+set-default-env LD_LIBRARY_PATH /app/.heroku/vendor/lib:/app/.graphviz/lib:/app/.gts/lib
+set-default-env LANG en_US.UTF-8
+set-default-env PYTHONHASHSEED random
+set-default-env PYTHONPATH /app/
+
+surce $BIN_DIR/steps/hooks/post_compile
+
 exit 0
 
 
