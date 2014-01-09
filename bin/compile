@@ -286,7 +286,8 @@ mkdir -p $(dirname $PROFILE_PATH)
 if [ -d $CACHE_DIR/.heroku ]; then #################################
  echo "retrieving .heroku from cache"
  cp -R $CACHE_DIR/.heroku .heroku
- ls .heroku
+ echo "done, contents are"
+ ls -la .heroku
 else
  echo "not cached"
  PYTHON_VERSION=$(cat runtime.txt)
