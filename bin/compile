@@ -266,7 +266,7 @@ source $BIN_DIR/steps/hooks/post_compile
 # check where the fuck is python bin
 echo "builddir"
 ls $BUILD_DIR/.heroku/python/bin
-echo "/app/
+echo "/app/"
 ls /app/.heroku/python/bin
 echo "HOME"
 ls $HOME/.heroku/python/bin
