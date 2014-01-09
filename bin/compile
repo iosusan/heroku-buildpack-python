@@ -127,7 +127,7 @@ compile() {
 		echo " making"
 		make -j5  > /dev/null 2>&1
 		echo " installing"
-		make install #> /dev/null 2>&1
+		make install > /dev/null 2>&1
 		echo "cleaning temporary stuff"
 		rm -Rf $GRAPHVIZ_WORKDIR
 		echo "done!"
@@ -171,6 +171,10 @@ export C_INCLUDE_PATH=$C_INCLUDE_PATH:"$BASE_DIR/$GRAPHVIZ_INCLUDEDIR"
 export CPLUS_INCLUDE_PATH=$CPLUS_INCLUDE_PATH:"$BASE_DIR/$GRAPHVIZ_INCLUDEDIR"
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:"$BASE_DIR/$GRAPHVIZ_PKGDIR"
 export PATH=$PATH:"$BASE_DIR/$GRAPHVIZ_BINDIR"
+
+# now, add the tools dir to slug
+echo "adding GTS and GRAPHVIZ to slug"
+cp -R $INSTALLDIR $BUILD_DIR/.tools
 
 
 echo ""
