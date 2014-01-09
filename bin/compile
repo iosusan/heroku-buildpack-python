@@ -51,7 +51,8 @@ download_sw() {
 	if [ ! -f "$3/$1" ]; then
 		# GTS requires curl -L xx > file
 		# graphviz does not.. 
-		if [ "$1" -eq "gts-0.7.6.tar.gz" ]; then
+		# http://tldp.org/HOWTO/Bash-Prog-Intro-HOWTO-11.html -> comparing strings using double quotes avoids parse errors
+		if [ "$1"="gts-0.7.6.tar.gz" ]; then
 			echo "downloading from $GTS_URL/$GTS_BINARY to $s/$GTS_BINARY"
 			curl -L $GTS_URL/$GTS_BINARY > $3/$GTS_BINARY
 		else
