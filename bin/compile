@@ -108,11 +108,11 @@ compile() {
 		cd "gts-0.7.6"
 		echo " configuring with prefix=$2/$GTS_INSTALLDIR"
 		create_dir $GTS_INSTALLDIR
-		configure --prefix="$2/$GTS_INSTALLDIR" > /dev/null 2>&1
+		configure --prefix="/app/$GTS_INSTALLDIR" > /dev/null 2>&1
 		echo " making"
 		make -j5 > /dev/null 2>&1
 		echo " installing"
-		make install > /dev/null 2>&1
+		make install DESTDIR="$2/$GTS_INSTALLDIR"> /dev/null 2>&1
 		echo " cleaning temporary stuff: $GTS_WORKDIR"
 		rm -Rf $GTS_WORKDIR
 		echo " done!"
@@ -121,13 +121,13 @@ compile() {
 		echo "compiling GRAPHVIZ"
 		# check that libgts is available
 		cd "graphviz-2.34.0"
-		echo " configuring with prefix=$2/$GRAPHVIZ_INSTALLDIR --enable-shared=no --enable-static=yes --with-gts=yes"
+		echo " configuring with prefix=/app/$GRAPHVIZ_INSTALLDIR --enable-shared=no --enable-static=yes --with-gts=yes"
 		create_dir $GRAPHVIZ_INSTALLDIR
 		configure --prefix="$2/$GRAPHVIZ_INSTALLDIR" --enable-shared=no --enable-static=yes --with-gts=yes > /dev/null 2>&1
 		echo " making"
 		make -j5  > /dev/null 2>&1
 		echo " installing"
-		make install > /dev/null 2>&1
+		make install DESTDIR="$2/GRAPHVIZ_INSTALLDIR" > /dev/null 2>&1
 		echo "cleaning temporary stuff"
 		rm -Rf $GRAPHVIZ_WORKDIR
 		echo "done!"
@@ -141,6 +141,10 @@ compile() {
 if [ ! -d $DOWNLOAD_DIR ]; then
 	mkdir -p $DOWNLOAD_DIR
 fi
+
+echo "------> installing GRAPHVIZ"
+
+
 
 # download sw to dir
 download_sw $GTS_BINARY $GTS_URL $DOWNLOAD_DIR
@@ -173,98 +177,19 @@ export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:"$BASE_DIR/$GRAPHVIZ_PKGDIR"
 export PATH=$PATH:"$BASE_DIR/$GRAPHVIZ_BINDIR"
 
 # now, add the tools dir to slug
-echo "adding GTS and GRAPHVIZ to slug"
+echo "adding GTS and GRAPHVIZ to slug "
 cp -R $INSTALLDIR $BUILD_DIR/.tools
-ls $BUILD_DIR/.tools
+# now i have all my stuff under .tools dir
+# be careful to add the correct PATH to the application PATH=$PATH:/app/.tools/graphviz/bin
 
 echo ""
 echo "#############################"
 echo ""
 
+
+echo "------> installing PYTHON"
 exit 0
 
-
-<<OLDSTUFF
-
-# clean cache
-rm -Rf $CACHE_DIR/vendor
-
-## install GTS
-if [ ! -d $CACHE_DIR/vendor/gts ]; then
-  echo "-----> Downloading GNU GTS"
-  GTS_WORKDIR="tmp_gts"
-  GTS_VENDOR_DIR="$CACHE_DIR/vendor/gts"
-  echo "        creating dir $BUILD_DIR/$GTS_WORKDIR"
-  mkdir -p $BUILD_DIR/$GTS_WORKDIR
-  cd $BUILD_DIR/$GTS_WORKDIR
-  curl -L http://downloads.sourceforge.net/project/gts/gts/0.7.6/gts-0.7.6.tar.gz > gts-0.7.6.tar.gz
-  echo "        untarring gts-0.7.6.tar.gz"
-  tar zxvf gts-0.7.6.tar.gz > /dev/null 2>&1
-  cd gts-0.7.6
-  echo "        configuring GTS with prefix $GTS_VENDOR_DIR"
-  configure --prefix=$GTS_VENDOR_DIR 
-  #> /dev/null 2>&1
-  echo "        compiling GTS"
-  make -j5 > /dev/null 2>&1
-  echo "        installing"
-  make install > /dev/null 2>&1
-  echo "        cleaning up $BUILD_DIR/$GTS_WORKDIR"
-  rm -Rf $BUILD_DIR/$GTS_WORKDIR
-  echo "-> INSTALLED"
-else
-  echo "------> GTS already in cache dir"
-fi
-# move gts to .gts
-echo "creating gts"
-mkdir -p .gts
-cp -R $CACHE_DIR/vendor/gts .gts
-ls -la .gts
-
-# once build, add GTS lib to LD_LIBRARY_PATH
-export C_INCLUDE_PATH=$BUILD_DIR/gts/include
-export CPLUS_INCLUDE_PATH=$BUILD_DIR/gts/include
-export LIBRARY_PATH=$BUILD_DIR/gts/lib
-export LD_LIBRARY_PATH=$BUILD_DIR/gts/lib
-
-if [ ! -d $CACHE_DIR/vendor/graphviz ]; then
-  echo "-----> Downloading graphviz"
-  # need to download graphviz binary and dependencies
-  GRAPHVIZ_SOURCE_URL="http://www.graphviz.org/pub/graphviz/stable/SOURCES/graphviz-2.34.0.tar.gz"
-  GRAPHVIZ_WORKDIR="tmp_graphviz"
-  GRAPHVIZ_VENDOR_DIR="$CACHE_DIR/vendor/graphviz"
-  echo "--------> creating dir $BUILD_DIR/$GRAPHVIZ_WORKDIR"
-  mkdir -p $BUILD_DIR/$GRAPHVIZ_WORKDIR
-  cd $BUILD_DIR/$GRAPHVIZ_WORKDIR
-  echo "--------> downloading $GRAPHVIZ_SOURCE_URL"
-  curl -O $GRAPHVIZ_SOURCE_URL > /dev/null 2>&1
-  echo "--------> done, untarring"
-  tar zxvf graphviz-2.34.0.tar.gz > /dev/null 2>&1
-  cd graphviz-2.34.0
-  echo "-----> Configuring graphviz with prefix $GRAPHVIZ_VENDOR_DIR"
-  configure --prefix=$GRAPHVIZ_VENDOR_DIR --enable-shared=no --enable-static=yes --with-gts=yes > /dev/null 2>&1
-  echo "-----> Compiling graphviz"
-  make -j5 >/dev/null 2>&1
-  echo "-----> Installing graphviz"
-  make install > /dev/null 2>&1
-  echo "--------> cleaning up $BUILD_DIR/$GRAPHVIZ_WORKDIR"
-  rm -Rf $BUILD_DIR/$GRAPHVIZ_WORKDIR
-  echo "-> INSTALLED" 
-else
-  echo "------> GRAPHVIZ already in cache dir"
-fi
-
-# move graphviz to .graphviz
-echo "creating graphviz"
-mkdir -p graphviz
-cp -R $CACHE_DIR/vendor/graphviz graphviz
-ls -la graphviz
-
-#echo "---------> exporting updated PATH=$PATH:$BUILD_DIR/.graphviz/bin:$BUILD_DIR/.gts/bin"
-#export PATH=$PATH:$BUILD_DIR/.graphviz/bin:$BUILD_DIR/.gts/bin
-
-
-##
-OLDSTUFF
 
 <<PYTHONCRAP
 
