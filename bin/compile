@@ -278,34 +278,55 @@ if [ ! -f runtime.txt ]; then
 	echo $DEFAULT_PYTHON_VERSION > runtime.txt
 fi
 
+# try to get .heroku dir from CACHE_DIR
+# else create an empty one
+echo "preparing python runtime"
 mkdir .heroku
 mkdir -p $(dirname $PROFILE_PATH)
-
-PYTHON_VERSION=$(cat runtime.txt)
-echo "preparing python runtime"
-curl http://envy-versions.s3.amazonaws.com/$PYTHON_VERSION.tar.bz2 -s | tar jx &> /dev/null
-if [[ $? != 0 ]] ; then
+if [ -d $CACHE_DIR/.heroku ]; then #################################
+ cp -R $CACHE_DIR/.heroku .heroku
+else
+ PYTHON_VERSION=$(cat runtime.txt)
+ if [ -f .heroku/python-version ]; then
+  if [ ! $(cat .heroku/python-version) = $PYTHON_VERSION ]; then
+      echo "Found $(cat .heroku/python-version), removing."
+      rm -fr .heroku/python
+  else
+    SKIP_INSTALL=1
+  fi
+ fi
+ if [ ! "$SKIP_INSTALL" ]; then
+  echo "installing python $PYTHON_VERSION"
+  curl http://envy-versions.s3.amazonaws.com/$PYTHON_VERSION.tar.bz2 -s | tar jx &> /dev/null
+  if [[ $? != 0 ]] ; then
 	echo "ERROR: requested runtime ($PYTHON_VERSION) was not found."
 	exit 1
-fi
-mv python .heroku/python
-echo $PYTHON_VERSION > .heroku/python-version
+  fi
+  mv python .heroku/python
+  echo $PYTHON_VERSION > .heroku/python-version
+  # copy everything to cache
+  cp -R .heroku $CACHE_DIR/.heroku
+ else
+  echo "Using Python runtime ($PYTHON_VERSION)"
+ fi
+fi # end ###########################################################
 
 WORKING_DIR=$(pwd)
 
+# check if required distribute and pip
 echo "installing distribute"
 cd $ROOT_DIR/vendor/distribute-$DISTRIBUTE_VERSION/
-python setup.py install #&> dev/null
+python setup.py install &> dev/null
 cd $WORKING_DIR
 
 echo "installing pip"
 cd $ROOT_DIR/vendor/pip-$PIP_VERSION/
-python setup.py install #&> /dev/null
+python setup.py install &> /dev/null
 cd $WORKING_DIR
 
 source $BIN_DIR/steps/pylibmc
 
-echo "installind dependencies with pip"
+echo "installing dependencies with pip"
 $WORKING_DIR/.heroku/python/bin/pip install -r requirements.txt --exists-action=w --src=./.heroku/src | cleanup  # | indent
 
 # Set context environment variables.
@@ -322,9 +343,8 @@ source $BIN_DIR/steps/hooks/post_compile
 
 # check where the fuck is python bin
 echo "builddir"
-ls $BUILD_DIR/.heroku/python/bin
-echo "HOME"
-ls $HOME/.heroku/python/bin
+ls $BUILD_DIR/.heroku/python/bin # this is the only existing python
+# when deployed will be in /app/.heroku/python/bin -> should add it to PATH
 
 exit 0
 
