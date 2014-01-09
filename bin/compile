@@ -17,6 +17,63 @@ BUILD_DIR=$1
 CACHE_DIR=$2
 ENV_FILE=$3
 
+# sw vars.
+# will download files to vendor/downloaded dir
+# will decompress files to vendor/<name>
+DOWNLOAD_DIR="vendor/downloaded"
+WORKDIR="vendor/tmp"
+INSTALLDIR="vendor/tools"
+
+GTS_WORKDIR="$WORKDIR/gts"
+GTS_INSTALLDIR="$INSTALLDIR/gts"
+GTS_BINARY="gts-0.7.6.tar.gz"
+GTS_URL="http://downloads.sourceforge.net/project/gts/gts/0.7.6"
+
+GRAPHVIZ_WORKDIR="$WORKDIR/graphviz"
+GRAPHVIZ_INSTALLDIR="$INSTALLDIR/graphviz"
+GRAPHVIZ_BINARY="graphviz-2.34.0.tar.gz"
+GRAPHVIZ_URL="http://www.graphviz.org/pub/graphviz/stable/SOURCES"
+
+
+function create_dir {
+	echo "checking dir $1"
+	if [ ! -d $1 ]; then
+		echo "$1 not found, creating..."
+		mkdir -p $1
+	fi
+}
+
+function download_sw {
+	#$1 is the filename
+	#$2 is the url
+	#$3 is the dest dir
+	echo "checking download $3/$1"
+	if [ ! -f "$3/$1" ]; then
+		# GTS requires curl -L xx > file
+		# graphviz does not.. 
+		if [ $1 -eq "gts-0.7.6.tar.gz" ]; then
+			echo "downloading from $GTS_URL/$GTS_BINARY to $s/$GTS_BINARY"
+			curl -L $GTS_URL/$GTS_BINARY > $3/$GTS_BINARY
+		else
+			echo "downloading from $GRAPHVIZ_URL/$GRAPHVIZ_BINARY to $3/$GRAPHVIZ_BINARY"
+			cd $3 && { curl -O "$GRAPHVIZ_URL/$GRAPHVIZ_BINARY" ; cd -; }
+		fi
+	fi
+}
+
+
+# create sw dirs
+create_dir $GTS_DIR
+create_dir $GRAPHVIZ_DIR
+
+# download sw to dir
+download_sw $GTS_BINARY $GTS_URL $DOWNLOAD_DIR
+download_sw $GRAPHVIZ_BINARY $GRAPHVIZ_URL $DOWNLOAD_DIR
+
+
+
+<<OLDSTUFF
+
 # clean cache
 rm -Rf $CACHE_DIR/vendor
 
@@ -95,6 +152,8 @@ ls -la graphviz
 
 
 ##
+OLDSTUFF
+
 <<PYTHONCRAP
 
 CACHED_DIRS=".heroku"
