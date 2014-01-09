@@ -30,7 +30,7 @@ if [ ! -d $CACHE_DIR/vendor/gts ]; then
   echo "        untarring gts-0.7.6.tar.gz"
   tar zxvf gts-0.7.6.tar.gz > /dev/null 2>&1
   cd gts-0.7.6
-  echo "        configuring GTS with prefix $BUILD_DIR/.tools/gts"
+  echo "        configuring GTS with prefix $GTS_VENDOR_DIR"
   configure --prefix=$GTS_VENDOR_DIR 
   #> /dev/null 2>&1
   echo "        compiling GTS"
@@ -43,12 +43,15 @@ if [ ! -d $CACHE_DIR/vendor/gts ]; then
 else
   echo "------> GTS already in cache dir"
 fi
+# move gts to .gts
+cp -R $CACHE_DIR/vendor/gts .gts
+
 
 # once build, add GTS lib to LD_LIBRARY_PATH
-export C_INCLUDE_PATH=$CACHE_DIR/vendor/gts/include
-export CPLUS_INCLUDE_PATH=$CACHE_DIR/vendor/gts/include
-export LIBRARY_PATH=$CACHE_DIR/vendor/gts/lib
-export LD_LIBRARY_PATH=$CACHE_DIR/vendor/gts/lib
+export C_INCLUDE_PATH=$BUILD_DIR/.gts/include
+export CPLUS_INCLUDE_PATH=$BUILD_DIR/.gts/include
+export LIBRARY_PATH=$BUILD_DIR/.gts/lib
+export LD_LIBRARY_PATH=$BUILD_DIR/.gts/lib
 
 if [ ! -d $CACHE_DIR/vendor/graphviz ]; then
   echo "-----> Downloading graphviz"
@@ -76,8 +79,11 @@ if [ ! -d $CACHE_DIR/vendor/graphviz ]; then
 else
   echo "------> GRAPHVIZ already in cache dir"
 fi
-echo "---------> exporting updated PATH=$PATH:$GRAPHVIZ_VENDOR_DIR/bin:$GTS_VENDOR_DIR/bin"
-export PATH=$PATH:$GRAPHVIZ_VENDOR_DIR/bin:$GTS_VENDOR_DIR/bin
+
+# move graphviz to .graphviz
+cp -R $CACHE_DIR/vendor/graphviz .graphviz
+echo "---------> exporting updated PATH=$PATH:$BUILD_DIR/.graphviz/bin:$BUILD_DIR/.gts/bin"
+export PATH=$PATH:$BUILD_DIR/.graphviz/bin:$BUILD_DIR/.gts/bin
 
 
 ##
@@ -297,8 +303,8 @@ bpwatch stop collectstatic
 set-env PATH '$HOME/.heroku/python/bin:$PATH'
 set-env PYTHONUNBUFFERED true
 set-env PYTHONHOME /app/.heroku/python
-set-default-env LIBRARY_PATH /app/.heroku/vendor/lib:/app/.tools/graphviz/lib:/app/.tools/gts/lib
-set-default-env LD_LIBRARY_PATH /app/.heroku/vendor/lib:/app/.tools/graphviz/lib:/app/.tools/gts/lib
+set-default-env LIBRARY_PATH /app/.heroku/vendor/lib:/app/.graphviz/lib:/app/.gts/lib
+set-default-env LD_LIBRARY_PATH /app/.heroku/vendor/lib:/app/.graphviz/lib:/app/.gts/lib
 set-default-env LANG en_US.UTF-8
 set-default-env PYTHONHASHSEED random
 set-default-env PYTHONPATH /app/
