@@ -30,12 +30,12 @@ if [ ! -d $CACHE_DIR/vendor/gts ]; then
   echo "        untarring gts-0.7.6.tar.gz"
   tar zxvf gts-0.7.6.tar.gz > /dev/null 2>&1
   cd gts-0.7.6
-  echo "        configuring GTS with prefix $GTS_VENDOR_DIR"
-  configure --prefix=$GTS_VENDOR_DIR 
+  echo "        configuring GTS with prefix .gts"
+  configure --prefix=.gts 
   #> /dev/null 2>&1
   echo "        compiling GTS"
   make -j5 > /dev/null 2>&1
-  echo "        installing GTS to $GTS_VENDOR_DIR"
+  echo "        installing"
   make install > /dev/null 2>&1
   echo "        cleaning up $BUILD_DIR/$GTS_WORKDIR"
   rm -Rf $BUILD_DIR/$GTS_WORKDIR
@@ -44,6 +44,7 @@ else
   echo "------> GTS already in cache dir"
 fi
 # move gts to .gts
+mkdir -p .gts
 cp -R $CACHE_DIR/vendor/gts .gts
 
 
@@ -68,10 +69,10 @@ if [ ! -d $CACHE_DIR/vendor/graphviz ]; then
   tar zxvf graphviz-2.34.0.tar.gz > /dev/null 2>&1
   cd graphviz-2.34.0
   echo "-----> Configuring graphviz with prefix $GRAPHVIZ_VENDOR_DIR"
-  configure --prefix=$GRAPHVIZ_VENDOR_DIR --enable-shared=no --enable-static=yes --with-gts=yes > /dev/null 2>&1
+  configure --prefix=.graphviz --enable-shared=no --enable-static=yes --with-gts=yes > /dev/null 2>&1
   echo "-----> Compiling graphviz"
   make -j5 >/dev/null 2>&1
-  echo "-----> Installing graphviz to $GRAPHVIZ_VENDOR_DIR"
+  echo "-----> Installing graphviz"
   make install > /dev/null 2>&1
   echo "--------> cleaning up $BUILD_DIR/$GRAPHVIZ_WORKDIR"
   rm -Rf $BUILD_DIR/$GRAPHVIZ_WORKDIR
@@ -81,9 +82,11 @@ else
 fi
 
 # move graphviz to .graphviz
+mkdir -p .graphviz
 cp -R $CACHE_DIR/vendor/graphviz .graphviz
-echo "---------> exporting updated PATH=$PATH:$BUILD_DIR/.graphviz/bin:$BUILD_DIR/.gts/bin"
-export PATH=$PATH:$BUILD_DIR/.graphviz/bin:$BUILD_DIR/.gts/bin
+
+#echo "---------> exporting updated PATH=$PATH:$BUILD_DIR/.graphviz/bin:$BUILD_DIR/.gts/bin"
+#export PATH=$PATH:$BUILD_DIR/.graphviz/bin:$BUILD_DIR/.gts/bin
 
 
 ##
