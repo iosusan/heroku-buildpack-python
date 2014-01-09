@@ -37,7 +37,7 @@ GRAPHVIZ_URL="http://www.graphviz.org/pub/graphviz/stable/SOURCES"
 
 function create_dir {
 	echo "checking dir $1"
-	if [ ! -d $1 ]; then
+	if [ ! -d "$1" ]; then
 		echo "$1 not found, creating..."
 		mkdir -p $1
 	fi
@@ -51,7 +51,7 @@ function download_sw {
 	if [ ! -f "$3/$1" ]; then
 		# GTS requires curl -L xx > file
 		# graphviz does not.. 
-		if [ $1 -eq "gts-0.7.6.tar.gz" ]; then
+		if [ "$1" -eq "gts-0.7.6.tar.gz" ]; then
 			echo "downloading from $GTS_URL/$GTS_BINARY to $s/$GTS_BINARY"
 			curl -L $GTS_URL/$GTS_BINARY > $3/$GTS_BINARY
 		else
@@ -63,6 +63,10 @@ function download_sw {
 
 
 # create sw dirs
+if [ ! -d $DOWNLOAD_DIR ]; then
+	mkdir -p $DOWNLOAD_DIR
+fi
+
 create_dir $GTS_DIR
 create_dir $GRAPHVIZ_DIR
 
