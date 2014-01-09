@@ -233,7 +233,7 @@ echo $PYTHON_VERSION > .heroku/python-version
 WORKING_DIR=$(pwd)
 
 echo "installing distribute"
-cd $ROOT_DIR/vendor/distribute-$DISTRIBUTE_VERSIONi/
+cd $ROOT_DIR/vendor/distribute-$DISTRIBUTE_VERSION/
 python setup.py install & > dev/null
 cd $WORKING_DIR
 
