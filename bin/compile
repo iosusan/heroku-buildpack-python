@@ -175,11 +175,14 @@ export PATH=$PATH:"$BASE_DIR/$GRAPHVIZ_BINDIR"
 # now, add the tools dir to slug
 echo "adding GTS and GRAPHVIZ to slug"
 cp -R $INSTALLDIR $BUILD_DIR/.tools
-
+ls $BUILD_DIR/.tools
 
 echo ""
 echo "#############################"
 echo ""
+
+exit 0
+
 
 <<OLDSTUFF
 
