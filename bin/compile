@@ -44,10 +44,10 @@ else
   echo "------> GTS already in cache dir"
 fi
 # move gts to .gts
-echo "creating .gts"
-mkdir -p .gts
-cp -R $CACHE_DIR/vendor/gts .gts
-
+echo "creating gts"
+mkdir -p gts
+cp -R $CACHE_DIR/vendor/gts gts
+ls -la gts
 
 # once build, add GTS lib to LD_LIBRARY_PATH
 export C_INCLUDE_PATH=$BUILD_DIR/.gts/include
@@ -83,9 +83,10 @@ else
 fi
 
 # move graphviz to .graphviz
-echo "creating .graphviz"
-mkdir -p .graphviz
-cp -R $CACHE_DIR/vendor/graphviz .graphviz
+echo "creating graphviz"
+mkdir -p graphviz
+cp -R $CACHE_DIR/vendor/graphviz graphviz
+ls -la graphviz
 
 #echo "---------> exporting updated PATH=$PATH:$BUILD_DIR/.graphviz/bin:$BUILD_DIR/.gts/bin"
 #export PATH=$PATH:$BUILD_DIR/.graphviz/bin:$BUILD_DIR/.gts/bin
@@ -93,7 +94,7 @@ cp -R $CACHE_DIR/vendor/graphviz .graphviz
 
 ##
 
-CACHED_DIRS=(".heroku" ".gts" ".graphviz")
+CACHED_DIRS=".heroku"
 
 # Static configurations for virtualenv caches.
 VIRTUALENV_LOC=".heroku/venv"
