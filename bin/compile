@@ -67,9 +67,6 @@ if [ ! -d $DOWNLOAD_DIR ]; then
 	mkdir -p $DOWNLOAD_DIR
 fi
 
-create_dir $GTS_DIR
-create_dir $GRAPHVIZ_DIR
-
 # download sw to dir
 download_sw $GTS_BINARY $GTS_URL $DOWNLOAD_DIR
 download_sw $GRAPHVIZ_BINARY $GRAPHVIZ_URL $DOWNLOAD_DIR
