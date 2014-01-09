@@ -17,6 +17,8 @@ BUILD_DIR=$1
 CACHE_DIR=$2
 ENV_FILE=$3
 
+# clean cache
+rm -Rf $CACHE_DIR/vendor
 
 ## install GTS
 if [ ! -d $CACHE_DIR/vendor/gts ]; then
@@ -30,8 +32,8 @@ if [ ! -d $CACHE_DIR/vendor/gts ]; then
   echo "        untarring gts-0.7.6.tar.gz"
   tar zxvf gts-0.7.6.tar.gz > /dev/null 2>&1
   cd gts-0.7.6
-  echo "        configuring GTS with prefix .gts"
-  configure --prefix=.gts 
+  echo "        configuring GTS with prefix $GTS_VENDOR_DIR"
+  configure --prefix=$GTS_VENDOR_DIR 
   #> /dev/null 2>&1
   echo "        compiling GTS"
   make -j5 > /dev/null 2>&1
@@ -50,10 +52,10 @@ cp -R $CACHE_DIR/vendor/gts gts
 ls -la gts
 
 # once build, add GTS lib to LD_LIBRARY_PATH
-export C_INCLUDE_PATH=$BUILD_DIR/.gts/include
-export CPLUS_INCLUDE_PATH=$BUILD_DIR/.gts/include
-export LIBRARY_PATH=$BUILD_DIR/.gts/lib
-export LD_LIBRARY_PATH=$BUILD_DIR/.gts/lib
+export C_INCLUDE_PATH=$BUILD_DIR/gts/include
+export CPLUS_INCLUDE_PATH=$BUILD_DIR/gts/include
+export LIBRARY_PATH=$BUILD_DIR/gts/lib
+export LD_LIBRARY_PATH=$BUILD_DIR/gts/lib
 
 if [ ! -d $CACHE_DIR/vendor/graphviz ]; then
   echo "-----> Downloading graphviz"
@@ -70,7 +72,7 @@ if [ ! -d $CACHE_DIR/vendor/graphviz ]; then
   tar zxvf graphviz-2.34.0.tar.gz > /dev/null 2>&1
   cd graphviz-2.34.0
   echo "-----> Configuring graphviz with prefix $GRAPHVIZ_VENDOR_DIR"
-  configure --prefix=.graphviz --enable-shared=no --enable-static=yes --with-gts=yes > /dev/null 2>&1
+  configure --prefix=$GRAPHVIZ_VENDOR_DIR --enable-shared=no --enable-static=yes --with-gts=yes > /dev/null 2>&1
   echo "-----> Compiling graphviz"
   make -j5 >/dev/null 2>&1
   echo "-----> Installing graphviz"
@@ -93,6 +95,7 @@ ls -la graphviz
 
 
 ##
+<<PYTHONCRAP
 
 CACHED_DIRS=".heroku"
 
@@ -341,3 +344,6 @@ bpwatch start anvil_appdir_commit
 
 bpwatch stop anvil_appdir_commit
 bpwatch stop compile
+
+PYTHONCRAP
+
