@@ -281,15 +281,16 @@ fi
 # try to get .heroku dir from CACHE_DIR
 # else create an empty one
 echo "preparing python runtime"
-mkdir .heroku
+
 mkdir -p $(dirname $PROFILE_PATH)
 if [ -d $CACHE_DIR/.heroku ]; then #################################
  echo "retrieving .heroku from cache"
- cp -R $CACHE_DIR/.heroku .heroku
+ cp -R $CACHE_DIR/.heroku .
  echo "done, contents are"
- ls -la .heroku
+ ls -la .heroku/
 else
  echo "not cached"
+ mkdir .heroku
  PYTHON_VERSION=$(cat runtime.txt)
  if [ -f .heroku/python-version ]; then
   if [ ! $(cat .heroku/python-version) = $PYTHON_VERSION ]; then
