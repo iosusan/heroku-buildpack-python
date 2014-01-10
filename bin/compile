@@ -325,6 +325,7 @@ else
       echo "Found $(cat .heroku/python-version), removing."
       rm -fr .heroku/python
   else
+    echo "Found previous installation for $PYTHON_VERSION"
     SKIP_INSTALL=1
   fi
  fi
@@ -337,8 +338,11 @@ else
   fi
   mv python .heroku/python
   echo $PYTHON_VERSION > .heroku/python-version
+  echo "downloaded python runtime, copying to CACHE_DIR"
   # copy everything to cache
   cp -dR .heroku $CACHE_DIR/
+  echo "CACHE_DIR contains:"
+  ls -la CACHE_DIR/
  else
   echo "Using Python runtime ($PYTHON_VERSION)"
  fi
