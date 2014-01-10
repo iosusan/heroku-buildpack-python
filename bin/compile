@@ -108,10 +108,11 @@ compile() {
 		cd "gts-0.7.6"
 		echo " configuring with prefix=/app/$GTS_INSTALLDIR"
 		create_dir $GTS_INSTALLDIR
-		configure --prefix="/app/$GTS_INSTALLDIR" > /dev/null 2>&1
+		#configure --prefix="/app/$GTS_INSTALLDIR" > /dev/null 2>&1
+		configure > /dev/null 2>&1
 		echo " making"
 		make -j5 > /dev/null 2>&1
-		echo " installing"
+		echo " installing to $2/$GTS_INSTALLDIR"
 		make install DESTDIR="$2/$GTS_INSTALLDIR"> /dev/null 2>&1
 		echo " cleaning temporary stuff: $GTS_WORKDIR"
 		rm -Rf $GTS_WORKDIR
@@ -126,7 +127,7 @@ compile() {
 		configure --prefix="/app/$GRAPHVIZ_INSTALLDIR" --enable-shared=no --enable-static=yes --with-gts=yes > /dev/null 2>&1
 		echo " making"
 		make -j5  > /dev/null 2>&1
-		echo " installing"
+		echo " installing to $2/$GRAPHVIZ_INSTALLDIR"
 		make install DESTDIR="$2/$GRAPHVIZ_INSTALLDIR" > /dev/null 2>&1
 		echo "cleaning temporary stuff"
 		rm -Rf $GRAPHVIZ_WORKDIR
