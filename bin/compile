@@ -22,9 +22,9 @@ ENV_FILE=$3
 #############################################
 # uncomment this for clean all cached stuff #
 #############################################
-# echo "flushing CACHE_DIR..."              #
-#rm -Rf $CACHE_DIR/                         #
-# echo "done!"                              #
+echo "flushing CACHE_DIR..."               #
+rm -Rf $CACHE_DIR/                         #
+echo "done!"                               #
 #############################################
 
 
@@ -37,6 +37,7 @@ INSTALLDIR="vendor/tools"
 
 GTS_WORKDIR="$WORKDIR/gts"
 GTS_INSTALLDIR="$INSTALLDIR/gts"
+GTS_INSTALLTMP="gts_tmp"
 GTS_LIBDIR="$GTS_INSTALLDIR/lib"
 GTS_INCLUDEDIR="$GTS_INSTALLDIR/include"
 GTS_BINDIR="$GTS_INSTALLDIR/bin"
@@ -46,6 +47,7 @@ GTS_URL="http://downloads.sourceforge.net/project/gts/gts/0.7.6"
 
 GRAPHVIZ_WORKDIR="$WORKDIR/graphviz"
 GRAPHVIZ_INSTALLDIR="$INSTALLDIR/graphviz"
+GRAPHVIZ_INSTALLTMP="graphviz_tmp"
 GRAPHVIZ_LIBDIR="$GRAPHVIZ_INSTALLDIR/lib"
 GRAPHVIZ_INCLUDEDIR="$GRAPHVIZ_INSTALLDIR/include"
 GRAPHVIZ_BINDIR="$GRAPHVIZ_INSTALLDIR/bin"
@@ -119,12 +121,16 @@ compile() {
 		cd "gts-0.7.6"
 		echo " configuring with prefix=/app/$GTS_INSTALLDIR"
 		create_dir $GTS_INSTALLDIR
-		#configure --prefix="/app/$GTS_INSTALLDIR" > /dev/null 2>&1
-		configure > /dev/null 2>&1
+		# this configures so that gts will be in
+		# /app/tools/vendor/gts
+		configure --prefix="/app/$GTS_INSTALLDIR" > /dev/null 2>&1
+		#configure --prefix="$GTS_INSTALLDIR" > /dev/null 2>&1
 		echo " making"
 		make -j5 > /dev/null 2>&1
-		echo " installing to $2/$GTS_INSTALLDIR"
-		make install DESTDIR="$2/$GTS_INSTALLDIR"> /dev/null 2>&1
+		# DESTDIR deploys everything to tmpdir $GTS_INSTALLTMP
+		# was $2/$GTS_INSTALLDIR
+		echo " installing to $GTS_INSTALLTMP"
+		make install DESTDIR="$GTS_INSTALLTMP"> /dev/null 2>&1
 		echo " cleaning temporary stuff: $GTS_WORKDIR"
 		rm -Rf $GTS_WORKDIR
 		echo " done!"
@@ -206,11 +212,12 @@ echo "          gts"
 if [ ! -d $CACHE_DIR/compiled/gts ]; then
  # compile GTS
  echo "           not cached, compiling"
+ # this leaves everything in $GTS_INSTALLTMP 
  compile $GTS_WORKDIR $BASE_DIR
  create_dir $CACHE_DIR/compiled
  # copy to cache dir
- echo "           compiled, copying from $BASE_DIR/$GTS_INSTALLDIR to $CACHE_DIR/compiled"
- cp -dR $BASE_DIR/$GTS_INSTALLDIR $CACHE_DIR/compiled/
+ echo "           compiled, copying from $GTS_INSTALLTMP to $CACHE_DIR/compiled"
+ cp -dR $GTS_INSTALLTMP $CACHE_DIR/compiled/
  echo "           contents of CACHE_DIR/compiled"
  ls $CACHE_DIR/compiled/
 else
