@@ -195,13 +195,13 @@ if [ ! -d $CACHE_DIR/compiled/gts ]; then
  # compile GTS
  echo "not cached, compiling"
  compile $GTS_WORKDIR $BASE_DIR
- create_dir $CACHE_DIR/compiled/gts
+ create_dir $CACHE_DIR/compiled
  # copy to cache dir
  cp -dR $BASE_DIR/$GTS_INSTALLDIR $CACHE_DIR/compiled/
 else
  # already cached, copy from cache
- echo "cached"
- cp -dR $CACHE_DIR/compiled/ $BASE_DIR/$GTS_INSTALLDIR
+ echo "cached, copying from $CACHED_DIR/compiled/gts to $BASE_DIR/$INSTALLDIR"
+ cp -dR $CACHE_DIR/compiled/gts $BASE_DIR/$INSTALLDIR
 fi
 
 # once installed, update library path
@@ -217,13 +217,13 @@ if [ ! -d $CACHE_DIR/compiled/graphviz ]; then
  echo "not cached, compiling"
  # compile graphviz
  compile $GRAPHVIZ_WORKDIR $BASE_DIR
- create_dir $CACHE_DIR/compiled/graphviz
+ create_dir $CACHE_DIR/compiled
  # copy to cache dir
  cp -dR $BASE_DIR/$GRAPHVIZ_INSTALLDIR $CACHE_DIR/compiled/
 else
  # already cached, copy from cache
- echo "cached"
- cp -dR $CACHE_DIR/compiled/ $BASE_DIR/$GRAPHVIZ_INSTALLDIR
+ echo "cached, copying from $CACHED_DIR/compiled/graphviz to $BASE_DIR/$INSTALLDIR"
+ cp -dR $CACHE_DIR/compiled/graphviz $BASE_DIR/$INSTALLDIR
 fi
 # done, update envvars again
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:"$BASE_DIR/$GRAPHVIZ_LIBDIR"
