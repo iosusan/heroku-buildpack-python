@@ -18,8 +18,13 @@ BUILD_DIR=$1
 CACHE_DIR=$2
 ENV_FILE=$3
 
-# uncomment this for clean all cached stuff
-rm -Rf $CACHE_DIR/
+
+#############################################
+# uncomment this for clean all cached stuff #
+#############################################
+#rm -Rf $CACHE_DIR/                         #
+#############################################
+
 
 # sw vars.
 # will download files to vendor/downloaded dir
