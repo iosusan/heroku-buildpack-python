@@ -131,7 +131,7 @@ compile() {
 		# DESTDIR deploys everything to tmpdir $GTS_INSTALLTMP
 		# was $2/$GTS_INSTALLDIR
 		echo " installing to $GTS_INSTALLTMP"
-		make install DESTDIR="$GTS_INSTALLTMP"> /dev/null 2>&1
+		make install DESTDIR="$GTS_INSTALLTMP" #> /dev/null 2>&1
 		echo " cleaning temporary stuff: $GTS_WORKDIR"
 		rm -Rf $GTS_WORKDIR
 		echo " done!"
