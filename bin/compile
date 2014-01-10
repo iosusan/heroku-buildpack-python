@@ -22,7 +22,9 @@ ENV_FILE=$3
 #############################################
 # uncomment this for clean all cached stuff #
 #############################################
+# echo "flushing CACHE_DIR..."              #
 #rm -Rf $CACHE_DIR/                         #
+# echo "done!"                              #
 #############################################
 
 
