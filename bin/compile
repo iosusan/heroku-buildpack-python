@@ -130,8 +130,8 @@ compile() {
 		make -j5 > /dev/null 2>&1
 		# DESTDIR deploys everything to tmpdir $GTS_INSTALLTMP
 		# was $2/$GTS_INSTALLDIR
-		echo " installing to $GTS_INSTALLTMP"
-		make install DESTDIR="/$2/$GTS_INSTALLTMP" #> /dev/null 2>&1
+		echo " installing to /$2/$GTS_INSTALLTMP"
+		make install DESTDIR="/$2/$GTS_INSTALLTMP" > /dev/null 2>&1
 		echo " cleaning temporary stuff: $GTS_WORKDIR"
 		rm -Rf $GTS_WORKDIR
 		echo " done!"
@@ -142,11 +142,12 @@ compile() {
 		cd "graphviz-2.34.0"
 		echo " configuring with prefix=/app/$GRAPHVIZ_INSTALLDIR --enable-shared=no --enable-static=yes --with-gts=yes"
 		create_dir $GRAPHVIZ_INSTALLDIR
-		configure --prefix="/app/$GRAPHVIZ_INSTALLDIR" --enable-shared=no --enable-static=yes --with-gts=yes > /dev/null 2>&1
+		create_dir $GRAPHVIZ_INSTALLTMP
+		configure --prefix="/graphviz" --enable-shared=no --enable-static=yes --with-gts=yes > /dev/null 2>&1
 		echo " making"
 		make -j5  > /dev/null 2>&1
-		echo " installing to $2/$GRAPHVIZ_INSTALLDIR"
-		make install DESTDIR="$2/$GRAPHVIZ_INSTALLDIR" > /dev/null 2>&1
+		echo " installing to /$2/$GRAPHVIZ_INSTALLTMP"
+		make install DESTDIR="/$2/$GRAPHVIZ_INSTALLTMP" > /dev/null 2>&1
 		echo "cleaning temporary stuff"
 		rm -Rf $GRAPHVIZ_WORKDIR
 		echo "done!"
@@ -264,6 +265,7 @@ echo "       adding GTS and GRAPHVIZ to slug "
 echo "        GTS"
 cp -aR $BASE_DIR/$GTS_INSTALLTMP $BUILD_DIR/tools
 echo "        GRAPHVIZ"
+cp -aR $BASE_DIR/$GRAPHVIZ_INSTALLTMP $BUILD_DIR/tools
 echo "       contents of BUILD_DIR/tools"
 ls $BUILD_DIR/tools/
 # now i have all my stuff under .tools dir
@@ -344,7 +346,7 @@ else
   # copy everything to cache
   cp -aR .heroku $CACHE_DIR/
   echo "CACHE_DIR contains:"
-  ls -la CACHE_DIR/
+  ls -la $CACHE_DIR/
  else
   echo "Using Python runtime ($PYTHON_VERSION)"
  fi
@@ -379,6 +381,15 @@ set-default-env PYTHONHASHSEED random
 set-default-env PYTHONPATH /app/
 
 source $BIN_DIR/steps/hooks/post_compile
+
+# check all the crap i have left lying around
+echo "########## contents of CACHE_DIR"
+ls -lR $CACHE_DIR
+echo "########## contents of BUILD_DIR"
+ls -lR $BUILD_DIR
+echo "########## contents of BASE:DIR"
+ls -lR $BASE_DIR
+
 
 exit 0
 
