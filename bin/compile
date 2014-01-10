@@ -216,9 +216,9 @@ echo "         cached compiled"
 
 BASE_DIR=`pwd`
 echo "          gts"
-if [ ! -d $CACHE_DIR/compiled/gts ]; then
+if [ ! -d $CACHE_DIR/compiled/gts_tmp ]; then
  # compile GTS
- echo "           not cached, compiling"
+ echo "           not cached (missing CACHE_DIR/compile/gts_tmp dir), compiling"
  # this leaves everything in $GTS_INSTALLTMP 
  compile $GTS_WORKDIR $BASE_DIR
  create_dir $CACHE_DIR/compiled
@@ -230,7 +230,7 @@ if [ ! -d $CACHE_DIR/compiled/gts ]; then
 else
  # already cached, copy from cache
  echo "           cached, copying from $CACHE_DIR/compiled/gts to $BASE_DIR/$INSTALLDIR"
- cp -aR $CACHE_DIR/compiled/gts $BASE_DIR/$INSTALLDIR
+ cp -aR $CACHE_DIR/compiled/gts_tmp/* $BASE_DIR/$INSTALLDIR
 fi
 
 # once installed, update library path
@@ -242,8 +242,8 @@ export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:"$BASE_DIR/$GTS_PKGDIR"
 export PATH=$PATH:"$BASE_DIR/$GTS_BINDIR"
 
 echo "         graphviz"
-if [ ! -d $CACHE_DIR/compiled/graphviz ]; then
- echo "          not cached, compiling"
+if [ ! -d $CACHE_DIR/compiled/graphviz_tmp ]; then
+ echo "          not cached (missing CACHE_DIR/compile/graphviz_tmp, compiling"
  # compile graphviz
  compile $GRAPHVIZ_WORKDIR $BASE_DIR
  create_dir $CACHE_DIR/compiled
@@ -255,7 +255,7 @@ if [ ! -d $CACHE_DIR/compiled/graphviz ]; then
 else
  # already cached, copy from cache
  echo "          cached, copying from $CACHE_DIR/compiled/graphviz to $BASE_DIR/$INSTALLDIR"
- cp -aR $CACHE_DIR/compiled/graphviz $BASE_DIR/$INSTALLDIR
+ cp -aR $CACHE_DIR/compiled/graphviz_tm/* $BASE_DIR/$INSTALLDIR
 fi
 # done, update envvars again
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:"$BASE_DIR/$GRAPHVIZ_LIBDIR"
@@ -275,7 +275,7 @@ echo "       contents of BUILD_DIR/tools"
 ls $BUILD_DIR/tools/
 # now i have all my stuff under .tools dir
 # be careful to add the correct PATH to the application PATH=$PATH:/app/.tools/graphviz/bin
-i
+
 exit 0
 echo " libs compiled"
 echo "#############################"
