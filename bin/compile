@@ -127,7 +127,7 @@ compile() {
 		echo " making"
 		make -j5  > /dev/null 2>&1
 		echo " installing"
-		make install DESTDIR="$2/GRAPHVIZ_INSTALLDIR" > /dev/null 2>&1
+		make install DESTDIR="$2/$GRAPHVIZ_INSTALLDIR" > /dev/null 2>&1
 		echo "cleaning temporary stuff"
 		rm -Rf $GRAPHVIZ_WORKDIR
 		echo "done!"
