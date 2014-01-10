@@ -22,9 +22,9 @@ ENV_FILE=$3
 #############################################
 # uncomment this for clean all cached stuff #
 #############################################
-echo "flushing CACHE_DIR..."               #
-rm -Rf $CACHE_DIR/                         #
-echo "done!"                               #
+#echo "flushing CACHE_DIR..."               #
+#rm -Rf $CACHE_DIR/                         #
+#echo "done!"                               #
 #############################################
 
 
@@ -121,6 +121,7 @@ compile() {
 		cd "gts-0.7.6"
 		echo " configuring with prefix=/app/$GTS_INSTALLDIR"
 		create_dir $GTS_INSTALLDIR
+		create_dir $GTS_INSTALLTMP
 		# this configures so that gts will be in
 		# /app/tools/vendor/gts
 		configure --prefix="/app/$GTS_INSTALLDIR" > /dev/null 2>&1
