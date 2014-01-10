@@ -158,35 +158,35 @@ echo "------> installing GRAPHVIZ"
 ##################################
 ### download files if required ###
 ##################################
-echo "checking if anything cached"
-echo "cached downloads"
-echo "gts"
+echo "        checking if anything cached"
+echo "         cached downloads"
+echo "         gts"
 if [ ! -d $CACHE_DIR/downloads/gts ];then
  # download sw to dir
- echo "not cached, downloading"
+ echo "          not cached, downloading"
  download_sw $GTS_BINARY $GTS_URL $DOWNLOAD_DIR
  # move to cache dir
  create_dir $CACHE_DIR/downloads/gts
  cp $DOWNLOAD_DIR/$GTS_BINARY $CACHE_DIR/downloads/gts/
 else
- echo "cached"
+ echo "          cached"
  # already cached, copy to $DOWNLOAD_DIR
  cp $CACHE_DIR/downloads/gts/$GTS_BINARY $DOWNLOAD_DIR/
 fi
 
-echo "graphviz"
+echo "         graphviz"
 if [ ! -d $CACHE_DIR/downloads/graphviz ]; then
- echo "not cached, downloading"
+ echo "          not cached, downloading"
  download_sw $GRAPHVIZ_BINARY $GRAPHVIZ_URL $DOWNLOAD_DIR
  # copy to cache dir
  create_dir $CACHE_DIR/downloads/graphviz
  cp $DOWNLOAD_DIR/$GRAPHVIZ_BINARY $CACHE_DIR/downloads/graphviz/
 else
- echo "cached"
+ echo "          cached"
  # copy from cache dir
  cp $CACHE_DIR/downloads/graphviz/$GRAPHVIZ_BINARY $DOWNLOAD_DIR/
 fi
-echo "finished downloads"
+echo "         finished downloads"
 ls $DOWNLOAD_DIR
 
 ########################
@@ -199,23 +199,23 @@ prepare_workdir $DOWNLOAD_DIR $GRAPHVIZ_BINARY $GRAPHVIZ_WORKDIR
 #####################
 ### compile files ###
 #####################
-echo "cached compiled"
+echo "         cached compiled"
 
 BASE_DIR=`pwd`
-echo "gts"
+echo "          gts"
 if [ ! -d $CACHE_DIR/compiled/gts ]; then
  # compile GTS
- echo "not cached, compiling"
+ echo "           not cached, compiling"
  compile $GTS_WORKDIR $BASE_DIR
  create_dir $CACHE_DIR/compiled
  # copy to cache dir
- echo "compiled, copying from $BASE_DIR/$GTS_INSTALLDIR to $CACHE_DIR/compiled"
+ echo "           compiled, copying from $BASE_DIR/$GTS_INSTALLDIR to $CACHE_DIR/compiled"
  cp -dR $BASE_DIR/$GTS_INSTALLDIR $CACHE_DIR/compiled/
- echo "contents of CACHE_DIR/compiled"
+ echo "           contents of CACHE_DIR/compiled"
  ls $CACHE_DIR/compiled/
 else
  # already cached, copy from cache
- echo "cached, copying from $CACHED_DIR/compiled/gts to $BASE_DIR/$INSTALLDIR"
+ echo "           cached, copying from $CACHED_DIR/compiled/gts to $BASE_DIR/$INSTALLDIR"
  cp -dR $CACHE_DIR/compiled/gts $BASE_DIR/$INSTALLDIR
 fi
 
@@ -227,20 +227,20 @@ export CPLUS_INCLUDE_PATH=$CPLUS_INCLUDE_PATH:"$BASE_DIR/$GTS_INCLUDEDIR"
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:"$BASE_DIR/$GTS_PKGDIR"
 export PATH=$PATH:"$BASE_DIR/$GTS_BINDIR"
 
-echo "graphviz"
+echo "         graphviz"
 if [ ! -d $CACHE_DIR/compiled/graphviz ]; then
- echo "not cached, compiling"
+ echo "          not cached, compiling"
  # compile graphviz
  compile $GRAPHVIZ_WORKDIR $BASE_DIR
  create_dir $CACHE_DIR/compiled
  # copy to cache dir
- echo "compiled, copying from $BASE_DIR/$GRAPHVIZ_INSTALLDIR to $CACHE_DIR/compiled"
+ echo "          compiled, copying from $BASE_DIR/$GRAPHVIZ_INSTALLDIR to $CACHE_DIR/compiled"
  cp -dR $BASE_DIR/$GRAPHVIZ_INSTALLDIR $CACHE_DIR/compiled/
- echo "contents of CACHE_DIR/compiled"
+ echo "          contents of CACHE_DIR/compiled"
  ls $CACHE_DIR/compiled/
 else
  # already cached, copy from cache
- echo "cached, copying from $CACHED_DIR/compiled/graphviz to $BASE_DIR/$INSTALLDIR"
+ echo "          cached, copying from $CACHED_DIR/compiled/graphviz to $BASE_DIR/$INSTALLDIR"
  cp -dR $CACHE_DIR/compiled/graphviz $BASE_DIR/$INSTALLDIR
 fi
 # done, update envvars again
@@ -252,9 +252,9 @@ export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:"$BASE_DIR/$GRAPHVIZ_PKGDIR"
 export PATH=$PATH:"$BASE_DIR/$GRAPHVIZ_BINDIR"
 
 # now, add the tools dir to slug
-echo "adding GTS and GRAPHVIZ to slug "
+echo "       adding GTS and GRAPHVIZ to slug "
 cp -dR $INSTALLDIR $BUILD_DIR/tools
-echo "contents of BUILD_DIR/tools"
+echo "       contents of BUILD_DIR/tools"
 ls $BUILD_DIR/tools/
 # now i have all my stuff under .tools dir
 # be careful to add the correct PATH to the application PATH=$PATH:/app/.tools/graphviz/bin
