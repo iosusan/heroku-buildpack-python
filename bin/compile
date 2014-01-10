@@ -119,7 +119,7 @@ compile() {
 	if [ "$1" == "$GTS_WORKDIR" ]; then
 		echo "compiling GTS"
 		cd "gts-0.7.6"
-		echo " configuring with prefix=/app/$GTS_INSTALLDIR"
+		echo " configuring with prefix=/gts"
 		create_dir $GTS_INSTALLDIR
 		create_dir $GTS_INSTALLTMP
 		# this configures so that gts will be in
@@ -140,7 +140,7 @@ compile() {
 		echo "compiling GRAPHVIZ"
 		# check that libgts is available
 		cd "graphviz-2.34.0"
-		echo " configuring with prefix=/app/$GRAPHVIZ_INSTALLDIR --enable-shared=no --enable-static=yes --with-gts=yes"
+		echo " configuring with prefix=/graphviz --enable-shared=no --enable-static=yes --with-gts=yes"
 		create_dir $GRAPHVIZ_INSTALLDIR
 		create_dir $GRAPHVIZ_INSTALLTMP
 		configure --prefix="/graphviz" --enable-shared=no --enable-static=yes --with-gts=yes > /dev/null 2>&1
@@ -148,7 +148,7 @@ compile() {
 		make -j5  > /dev/null 2>&1
 		echo " installing to /$2/$GRAPHVIZ_INSTALLTMP"
 		make install DESTDIR="/$2/$GRAPHVIZ_INSTALLTMP" > /dev/null 2>&1
-		echo "cleaning temporary stuff"
+		echo "cleaning temporary stuff: $GRAPHVIZ_WORKDIR"
 		rm -Rf $GRAPHVIZ_WORKDIR
 		echo "done!"
 	fi
@@ -243,8 +243,8 @@ if [ ! -d $CACHE_DIR/compiled/graphviz ]; then
  compile $GRAPHVIZ_WORKDIR $BASE_DIR
  create_dir $CACHE_DIR/compiled
  # copy to cache dir
- echo "          compiled, copying from $BASE_DIR/$GRAPHVIZ_INSTALLDIR to $CACHE_DIR/compiled"
- cp -aR $BASE_DIR/$GRAPHVIZ_INSTALLDIR $CACHE_DIR/compiled/
+ echo "          compiled, copying from $GRAPHVIZ_INSTALLTMP to $CACHE_DIR/compiled"
+ cp -aR $GRAPHVIZ_INSTALLTMP $CACHE_DIR/compiled/
  echo "          contents of CACHE_DIR/compiled"
  ls $CACHE_DIR/compiled/
 else
