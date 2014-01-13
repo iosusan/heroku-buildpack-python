@@ -148,9 +148,11 @@ compile() {
 		create_dir $GRAPHVIZ_INSTALLTMP
 		configure --prefix="/graphviz" --enable-shared=no --enable-static=yes --with-gts=yes > /dev/null 2>&1
 		echo " making"
-		make -j5  #> /dev/null 2>&1
+		make -j5  > /dev/null 2>&1
 		echo " installing to /$2/$GRAPHVIZ_INSTALLTMP"
-		make install DESTDIR="/$2/$GRAPHVIZ_INSTALLTMP" #> /dev/null 2>&1
+		make install DESTDIR="/$2/$GRAPHVIZ_INSTALLTMP" > /dev/null 2>&1
+		pwd 
+		echo /$2/$GRAPHVIZ_INSTALLTMP
 		ls /$2/$GRAPHVIZ_INSTALLTMP/
 		GRAPHVIZ_COMPILATION_SPACE=`du -sh . | cut -f1`
 		echo "cleaning temporary stuff: $GRAPHVIZ_WORKDIR, releasing $GRAPHVIZ_COMPILATION_SPACE"
