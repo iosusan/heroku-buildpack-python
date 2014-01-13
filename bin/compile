@@ -210,9 +210,9 @@ prepare_workdir $DOWNLOAD_DIR $GTS_BINARY $GTS_WORKDIR
 prepare_workdir $DOWNLOAD_DIR $GRAPHVIZ_BINARY $GRAPHVIZ_WORKDIR
 
 # i would not need anymore the download files in workingdir, so remove them
-download_space=$(du -h $DOWNLOAD_DIR)
+download_space=$(du -sh $DOWNLOAD_DIR | cut -f1)
 echo "removing $DOWNLOAD_DIR freeing up $dowload_space"
-rm -Rf $DOWNLOAD_DOR
+rm -Rf $DOWNLOAD_DIR
 echo "done"
 
 #####################
