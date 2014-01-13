@@ -307,11 +307,17 @@ VENDOR_DIR_SPACE=`du -sh vendor | cut -f1`
 echo "removing 'vendor' dir, freeing up $VENDOR_DIR_SPACE"
 rm -Rf vendor
 # remove tmp installdirrs gts_tmp and graphviz_tmp
-TMPGTS_SPACE=`du -sh gts_tmp | cut -f1`
-TMPGRAPHVIZ_SPACE=`du -sh graphviz_tmp | cut -f1`
-echo "removing 'gts_tmp' and 'graphviz_tmp' dirs, freeing up $TMPGTS_SPACE + $TMPGRAPHVIZ_SPACE"
-rm -Rf gts_tmp
-rm -Rf graphviz_tmp
+if [ -d gts_tmp ]; then
+ TMPGTS_SPACE=`du -sh gts_tmp | cut -f1`
+ echo "removing 'gts_tmp' dir, freeing up $TMPGTS_SPACE"
+ rm -Rf gts_Tmp
+fi
+
+if [ -d graphviz_tmp ];then
+ TMPGRAPHVIZ_SPACE=`du -sh graphviz_tmp | cut -f1`
+ echo "removing 'graphviz_tmp' dir, freeing up $TMPGRAPHVIZ_SPACE"
+ rm -Rf graphviz_tmp
+fi
  
 echo "-------> libs compiled"
 echo "#############################"
