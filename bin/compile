@@ -211,6 +211,8 @@ rm -Rf $DOWNLOAD_DIR
 ### compile files ###
 #####################
 echo "-------> compiling"
+echo "contents of CACHE_DIR/compiled"
+ls $CACHE_DIR/compiled/
 
 BASE_DIR=`pwd`
 #echo "          gts"
@@ -222,7 +224,7 @@ if [ ! -d $CACHE_DIR/compiled/gts_tmp ]; then
  compile $GTS_WORKDIR $BASE_DIR
  create_dir $CACHE_DIR/compiled
  # copy to cache dir
- echo "           compiled, copying from $GTS_INSTALLTMP to $CACHE_DIR/compiled"a
+ echo "           compiled, copying from $GTS_INSTALLTMP to $CACHE_DIR/compiled"
  cp -aR $GTS_INSTALLTMP $CACHE_DIR/compiled/
  #echo "           contents of CACHE_DIR/compiled"
  #ls $CACHE_DIR/compiled/
@@ -242,7 +244,6 @@ export CPLUS_INCLUDE_PATH=$CPLUS_INCLUDE_PATH:"$BASE_DIR/$GTS_INCLUDEDIR"
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:"$BASE_DIR/$GTS_PKGDIR"
 export PATH=$PATH:"$BASE_DIR/$GTS_BINDIR"
 
-echo "         graphviz"
 if [ ! -d $CACHE_DIR/compiled/graphviz_tmp ]; then
  echo "          not cached (missing CACHE_DIR/compile/graphviz_tmp, compiling"
  # compile graphviz
