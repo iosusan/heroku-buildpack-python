@@ -202,7 +202,9 @@ ls $DOWNLOAD_DIR
 ########################
 # cp downloaded files to workdirs and uncompress them
 echo "-------> preparing working dirs"
-ls $WORKING_DIR
+# $WORKDIR
+ls $WORKDIR
+ls vendor/
 prepare_workdir $DOWNLOAD_DIR $GTS_BINARY $GTS_WORKDIR
 ls $GTS_WORKDIR
 prepare_workdir $DOWNLOAD_DIR $GRAPHVIZ_BINARY $GRAPHVIZ_WORKDIR
