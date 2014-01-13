@@ -226,6 +226,7 @@ if [ ! -d $CACHE_DIR/compiled/gts_tmp ]; then
  # copy to cache dir
  echo "           compiled, copying from $GTS_INSTALLTMP to $CACHE_DIR/compiled"
  cp -aR $GTS_INSTALLTMP $CACHE_DIR/compiled/
+ cp -aR $GTS_INSTALLTMP/* $BASE_DIR/$INSTALLDIR
  echo "           contents of CACHE_DIR/compiled"
  ls $CACHE_DIR/compiled/
 else
@@ -253,6 +254,7 @@ if [ ! -d $CACHE_DIR/compiled/graphviz_tmp ]; then
  # copy to cache dir
  echo "          compiled, copying from $GRAPHVIZ_INSTALLTMP to $CACHE_DIR/compiled"
  cp -aR $GRAPHVIZ_INSTALLTMP $CACHE_DIR/compiled/
+ cp -aR $GTS_INSTALLTMP/* $BASE_DIR/$INSTALLDIR
  echo "          contents of CACHE_DIR/compiled"
  ls $CACHE_DIR/compiled/
 else
