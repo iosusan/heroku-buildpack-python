@@ -152,7 +152,7 @@ compile() {
 		make install DESTDIR="/$2/$GRAPHVIZ_INSTALLTMP" #> /dev/null 2>&1
 		ls /$2/$GRAPHVIZ_INSTALLTMP/
 		GRAPHVIZ_COMPILATION_SPACE=`du -sh ./$GRAPHVIZ_WORKDIR | cut -f1`
-		echo "cleaning temporary stuff: $GRAPHVIZ_WORKDIRi, releasing $GRAPHVIZ_COMPILATION_SPACE"
+		echo "cleaning temporary stuff: $GRAPHVIZ_WORKDIR, releasing $GRAPHVIZ_COMPILATION_SPACE"
 		rm -Rf $GRAPHVIZ_WORKDIR
 		echo "done!"
 	fi
@@ -220,13 +220,15 @@ echo "          gts"
 if [ ! -d $CACHE_DIR/compiled/gts_tmp ]; then
  # compile GTS
  echo "           not cached (missing CACHE_DIR/compile/gts_tmp dir), compiling"
- # this leaves everything in $GTS_INSTALLTMP 
+ # this leaves everything in $WORKING_DIR/$GTS_INSTALLTMP 
  compile $GTS_WORKDIR $BASE_DIR
+echo "compiled GTS, results"
+ls -la $GTS_WORKING_DIR
+ls -la $WORKING_DIR/$GTS_WORKING_DIR
  create_dir $CACHE_DIR/compiled
  # copy to cache dir
  echo "           compiled, copying from $GTS_INSTALLTMP to $CACHE_DIR/compiled"
  cp -aR $GTS_INSTALLTMP $CACHE_DIR/compiled/
- cp -aR $GTS_INSTALLTMP/* $BASE_DIR/$INSTALLDIR
  echo "           contents of CACHE_DIR/compiled"
  ls $CACHE_DIR/compiled/
 else
@@ -254,7 +256,6 @@ if [ ! -d $CACHE_DIR/compiled/graphviz_tmp ]; then
  # copy to cache dir
  echo "          compiled, copying from $GRAPHVIZ_INSTALLTMP to $CACHE_DIR/compiled"
  cp -aR $GRAPHVIZ_INSTALLTMP $CACHE_DIR/compiled/
- cp -aR $GTS_INSTALLTMP/* $BASE_DIR/$INSTALLDIR
  echo "          contents of CACHE_DIR/compiled"
  ls $CACHE_DIR/compiled/
 else
