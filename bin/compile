@@ -406,6 +406,7 @@ fi # end ###########################################################
 
 
 
+set +e
 WORKING_DIR=$(pwd)
 
 # check if required distribute and pip
@@ -416,8 +417,11 @@ cd $WORKING_DIR
 
 echo "installing pip"
 cd $ROOT_DIR/vendor/pip-$PIP_VERSION/
-python setup.py install &> /dev/null
+python setup.py install #&> /dev/null
 cd $WORKING_DIR
+
+set -e
+hash -r
 
 # before installing dependencies, export correct paths to env
 #source $BIN_DIR/steps/pylibmc
