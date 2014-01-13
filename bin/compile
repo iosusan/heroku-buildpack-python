@@ -206,12 +206,8 @@ ls $DOWNLOAD_DIR
 echo "-------> preparing working dirs"
 # copy GTS_BINARY from DOWNLOAD_DIR to GTS_WORKDIR, then uncompress it and remove tarball
 prepare_workdir $DOWNLOAD_DIR $GTS_BINARY $GTS_WORKDIR
-# there shuld be a gts-0.7.6 dir under GTS_WORKDIR
-ls $GTS_WORKDIR/gts-0.7.6/
+# do the same for GRAPHVIZ_BINARY
 prepare_workdir $DOWNLOAD_DIR $GRAPHVIZ_BINARY $GRAPHVIZ_WORKDIR
-ls $GRAPHVIZ_WORKDIR/graphviz-2.34.0/
-
-exit 0
 
 # i would not need anymore the download files in workingdir, so remove them
 DOWNLOAD_SPACE=`du -sh $DOWNLOAD_DIR | cut -f1`
@@ -219,10 +215,14 @@ echo "removing $DOWNLOAD_DIR freeing up $DOWNLOAD_SPACE"
 rm -Rf $DOWNLOAD_DIR
 echo "done"
 
+# now there sould not be vendor/downloaded dir
+echo "should not be 'downloaded' dir"
+ls vendor/
+
 #####################
 ### compile files ###
 #####################
-echo "         cached compiled"
+echo "-------> compiling"
 
 BASE_DIR=`pwd`
 echo "          gts"
@@ -230,9 +230,10 @@ if [ ! -d $CACHE_DIR/compiled/gts_tmp ]; then
  # compile GTS
  echo "           not cached (missing CACHE_DIR/compile/gts_tmp dir), compiling"
  # this leaves everything in $WORKING_DIR/$GTS_INSTALLTMP 
+echo "compile $GTS_WORKDIR $BASE_DIR"
  compile $GTS_WORKDIR $BASE_DIR
-#ls -la $GTS_WORKING_DIR
-#ls -la $WORKING_DIR/$GTS_WORKING_DIR
+ls -la $WORKDIR
+ls -la $WORKDIR/$GTS_INSTALLTMP
  create_dir $CACHE_DIR/compiled
  # copy to cache dir
  echo "           compiled, copying from $GTS_INSTALLTMP to $CACHE_DIR/compiled"
