@@ -113,7 +113,7 @@ prepare_workdir() {
 	echo "untarring $2"
 	tar zxvf $2 > /dev/null 2>&1
 	ls -la .
-	#cd -
+	cd -
 }
 
 ###
@@ -196,14 +196,18 @@ else
  # copy from cache dir
  cp $CACHE_DIR/downloads/graphviz/$GRAPHVIZ_BINARY $DOWNLOAD_DIR/
 fi
+echo $DOWNLOAD_DIR
 ls $DOWNLOAD_DIR
 
 ########################
 ### uncompress files ###
 ########################
 # cp downloaded files to workdirs and uncompress them
+pwd
 prepare_workdir $DOWNLOAD_DIR $GTS_BINARY $GTS_WORKDIR
+pwd
 prepare_workdir $DOWNLOAD_DIR $GRAPHVIZ_BINARY $GRAPHVIZ_WORKDIR
+pwd
 
 # i would not need anymore the download files in workingdir, so remove them
 download_space=$(du -sh $DOWNLOAD_DIR | cut -f1)
