@@ -35,10 +35,6 @@ DOWNLOAD_DIR="vendor/downloaded"
 WORKDIR="vendor/tmp"
 INSTALLDIR="vendor/tools"
 
-# dependencies
-# libexpat is already in dyno /lib
-# GTS
-# libpng12 is already in dyno /lib
 
 GTS_WORKDIR="$WORKDIR/gts"
 GTS_INSTALLDIR="$INSTALLDIR/gts"
@@ -110,7 +106,7 @@ prepare_workdir() {
 	cp "$1/$2" $3
 	cd $3
 	tar zxvf $2 > /dev/null 2>&1
-	ls -la $2
+	ls -la $3
 	cd -
 }
 
