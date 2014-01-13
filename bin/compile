@@ -214,6 +214,7 @@ echo "-------> compiling"
 
 BASE_DIR=`pwd`
 #echo "          gts"
+ls $CACHE_DIR/compiled
 if [ ! -d $CACHE_DIR/compiled/gts_tmp ]; then
  # compile GTS
  #echo "           not cached (missing CACHE_DIR/compile/gts_tmp dir), compiling"
@@ -222,7 +223,7 @@ if [ ! -d $CACHE_DIR/compiled/gts_tmp ]; then
  compile $GTS_WORKDIR $BASE_DIR
  create_dir $CACHE_DIR/compiled
  # copy to cache dir
- #echo "           compiled, copying from $GTS_INSTALLTMP to $CACHE_DIR/compiled"
+ echo "           compiled, copying from $GTS_INSTALLTMP to $CACHE_DIR/compiled"a
  cp -aR $GTS_INSTALLTMP $CACHE_DIR/compiled/
  #echo "           contents of CACHE_DIR/compiled"
  #ls $CACHE_DIR/compiled/
