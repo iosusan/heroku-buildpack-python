@@ -133,7 +133,8 @@ compile() {
 		echo " installing to /$2/$GTS_INSTALLTMP"
 		make install DESTDIR="/$2/$GTS_INSTALLTMP" > /dev/null 2>&1
 		ls /$2/$GTS_INSTALLTMP
-		echo " cleaning temporary stuff: $GTS_WORKDIR"
+		GTS_COMPILATION_SPACE=`du -sh ./$GTS_WORKDIR| cut -f1 `
+		echo " cleaning temporary stuff: $GTS_WORKDIR, releasing $GTS_COMPILATION_SPACE"
 		rm -Rf $GTS_WORKDIR
 		echo " done!"
 		
@@ -150,7 +151,8 @@ compile() {
 		echo " installing to /$2/$GRAPHVIZ_INSTALLTMP"
 		make install DESTDIR="/$2/$GRAPHVIZ_INSTALLTMP" #> /dev/null 2>&1
 		ls /$2/$GRAPHVIZ_INSTALLTMP/
-		echo "cleaning temporary stuff: $GRAPHVIZ_WORKDIR"
+		GRAPHVIZ_COMPILATION_SPACE=`du -sh ./$GRAPHVIZ_WORKDIR | cut -f1`
+		echo "cleaning temporary stuff: $GRAPHVIZ_WORKDIRi, releasing $GRAPHVIZ_COMPILATION_SPACE"
 		rm -Rf $GRAPHVIZ_WORKDIR
 		echo "done!"
 	fi
@@ -270,6 +272,7 @@ export PATH=$PATH:"$BASE_DIR/$GRAPHVIZ_BINDIR"
 
 # now, add the tools dir to slug
 echo "       adding GTS and GRAPHVIZ to slug "
+ls .
 echo "INSTALLDIR"
 ls $BASE_DIR/$INSTALLDIR
 echo "INSTALLTMP"
