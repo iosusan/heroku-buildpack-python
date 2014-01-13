@@ -108,7 +108,7 @@ prepare_workdir() {
 	tar zxvf $2 > /dev/null 2>&1
 	# remove tarball
 	rm $2
-	cd -
+	#cd -
 }
 
 ###
@@ -184,8 +184,8 @@ else
  # copy from cache dir
  cp $CACHE_DIR/downloads/graphviz/$GRAPHVIZ_BINARY $DOWNLOAD_DIR/
 fi
-echo $DOWNLOAD_DIR
-ls $DOWNLOAD_DIR
+#echo $DOWNLOAD_DIR
+#ls $DOWNLOAD_DIR
 
 ########################
 ### uncompress files ###
@@ -211,8 +211,8 @@ rm -Rf $DOWNLOAD_DIR
 ### compile files ###
 #####################
 echo "-------> compiling"
-echo "contents of CACHE_DIR/compiled"
-ls $CACHE_DIR/compiled/
+#echo "contents of CACHE_DIR/compiled"
+#ls $CACHE_DIR/compiled/
 
 BASE_DIR=`pwd`
 #echo "          gts"
