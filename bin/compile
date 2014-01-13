@@ -366,8 +366,6 @@ mkdir -p $(dirname $PROFILE_PATH)
 if [ -d $CACHE_DIR/.heroku ]; then #################################
  echo "retrieving .heroku from cache"
  cp -aR $CACHE_DIR/.heroku .
- #echo "done, contents are"
- #ls -la .heroku/
 else
  echo "not cached"
  mkdir .heroku
@@ -400,8 +398,7 @@ else
  fi
 fi # end ###########################################################
 
-# exit here by now
-#exit 0
+
 
 WORKING_DIR=$(pwd)
 
@@ -416,10 +413,12 @@ cd $ROOT_DIR/vendor/pip-$PIP_VERSION/
 python setup.py install &> /dev/null
 cd $WORKING_DIR
 
+# before installing dependencies, export correct paths to env
 source $BIN_DIR/steps/pylibmc
 
 echo "installing dependencies with pip"
-$WORKING_DIR/.heroku/python/bin/pip install -r requirements.txt --exists-action=w --src=./.heroku/src &> /dev/null 
+/app/.heroku/python/bin/pip install -r requirements.txt --exists-action=w --src=./.heroku/src &> /dev/null
+#$WORKING_DIR/.heroku/python/bin/pip install -r requirements.txt --exists-action=w --src=./.heroku/src &> /dev/null 
 
 # Set context environment variables.
 #set-env PATH '$HOME/.heroku/python/bin:$HOME/tools/graphviz/bin:$PATH'
@@ -436,11 +435,11 @@ source $BIN_DIR/steps/hooks/post_compile
 
 # check all the crap i have left lying around
 echo "########## contents of CACHE_DIR"
-ls -lR $CACHE_DIR
+ls $CACHE_DIR
 echo "########## contents of BUILD_DIR"
-ls -lR $BUILD_DIR
+ls $BUILD_DIR
 echo "########## contents of BASE:DIR"
-ls -lR $BASE_DIR
+ls $BASE_DIR
 
 # check path
 
