@@ -112,7 +112,7 @@ prepare_workdir() {
 	ls -la
 	echo "untarring $2"
 	tar zxvf $2 > /dev/null 2>&1
-	ls -la $3
+	ls -la .
 	#cd -
 }
 
