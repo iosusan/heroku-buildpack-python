@@ -108,7 +108,7 @@ prepare_workdir() {
 	tar zxvf $2 > /dev/null 2>&1
 	# remove tarball
 	rm $2
-	#cd -
+	cd - > /dev/null 2>&1 # back to initial dir, supress output
 }
 
 ###
