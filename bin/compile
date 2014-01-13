@@ -120,7 +120,7 @@ compile() {
 		echo "compiling GTS"
 		cd "gts-0.7.6"
 		echo " configuring with prefix=/gts"
-		create_dir $GTS_INSTALLDIR
+		#create_dir $GTS_INSTALLDIR
 		create_dir $GTS_INSTALLTMP
 		# this configures so that gts will be in
 		# /app/tools/vendor/gts
@@ -132,9 +132,8 @@ compile() {
 		# was $2/$GTS_INSTALLDIR
 		echo " installing to /$2/$GTS_INSTALLTMP"
 		make install DESTDIR="/$2/$GTS_INSTALLTMP" > /dev/null 2>&1
-		ls /$2/$GTS_INSTALLTMP
-		ls $GTS_INSTALLTMP
-		GTS_COMPILATION_SPACE=`du -sh .| cut -f1 `
+		ls .
+		GTS_COMPILATION_SPACE=`du -sh $GTS_INSTALLTMP| cut -f1 `
 		echo " cleaning temporary stuff: $GTS_WORKDIR, releasing $GTS_COMPILATION_SPACE"
 		rm -Rf $GTS_WORKDIR
 		echo " done!"
@@ -144,7 +143,7 @@ compile() {
 		# check that libgts is available
 		cd "graphviz-2.34.0"
 		echo " configuring with prefix=/graphviz --enable-shared=no --enable-static=yes --with-gts=yes"
-		create_dir $GRAPHVIZ_INSTALLDIR
+		#create_dir $GRAPHVIZ_INSTALLDIR
 		create_dir $GRAPHVIZ_INSTALLTMP
 		configure --prefix="/graphviz" --enable-shared=no --enable-static=yes --with-gts=yes > /dev/null 2>&1
 		echo " making"
@@ -223,9 +222,8 @@ if [ ! -d $CACHE_DIR/compiled/gts_tmp ]; then
  echo "           not cached (missing CACHE_DIR/compile/gts_tmp dir), compiling"
  # this leaves everything in $WORKING_DIR/$GTS_INSTALLTMP 
  compile $GTS_WORKDIR $BASE_DIR
-echo "compiled GTS, results"
-ls -la $GTS_WORKING_DIR
-ls -la $WORKING_DIR/$GTS_WORKING_DIR
+#ls -la $GTS_WORKING_DIR
+#ls -la $WORKING_DIR/$GTS_WORKING_DIR
  create_dir $CACHE_DIR/compiled
  # copy to cache dir
  echo "           compiled, copying from $GTS_INSTALLTMP to $CACHE_DIR/compiled"
