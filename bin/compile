@@ -231,7 +231,7 @@ else
  echo "           cached, copying from $CACHE_DIR/compiled/gts_tmp/* to $BASE_DIR/$INSTALLDIR"
  ls $CACHE_DIR/compiled/gts_tmp/
  ls $CACHE_DIR/compiled/gts_tmp/gts/
- cp -aR $CACHE_DIR/compiled/gts_tmp/* $BASE_DIR/$INSTALLDIR
+ cp -aR $CACHE_DIR/compiled/gts_tmp/gts $BASE_DIR/$INSTALLDIR
 fi
 
 # once installed, update library path
@@ -258,7 +258,7 @@ else
  echo "          cached, copying from $CACHE_DIR/compiled/graphviz_tmp/* to $BASE_DIR/$INSTALLDIR"
  ls $CACHE_DIR/compiled/graphviz_tmp/
  ls $CACHE_DIR/compiled/graphviz_tmp/graphviz/
- cp -aR $CACHE_DIR/compiled/graphviz_tmp/* $BASE_DIR/$INSTALLDIR
+ cp -aR $CACHE_DIR/compiled/graphviz_tmp/graphviz $BASE_DIR/$INSTALLDIR
 fi
 # done, update envvars again
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:"$BASE_DIR/$GRAPHVIZ_LIBDIR"
@@ -270,6 +270,9 @@ export PATH=$PATH:"$BASE_DIR/$GRAPHVIZ_BINDIR"
 
 # now, add the tools dir to slug
 echo "       adding GTS and GRAPHVIZ to slug "
+echo "INSTALLDIR"
+ls $BUILD_DIR/$INSTALLDIR
+echo "INSTALLTMP"
 ls $BASE_DIR/$GTS_INSTALLTMP/
 echo "        $BASE_DIR/$GTS_INSTALLTMP to $BUILD/tools"
 cp -aR $BASE_DIR/$GTS_INSTALLTMP $BUILD_DIR/tools
