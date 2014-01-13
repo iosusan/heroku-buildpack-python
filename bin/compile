@@ -261,7 +261,7 @@ if [ ! -d $CACHE_DIR/compiled/graphviz_tmp ]; then
 else
  # already cached, copy from cache
  echo "          cached, copying from $CACHE_DIR/compiled/graphviz_tmp/* to $BASE_DIR/$INSTALLDIR"
- cp -aR $CACHE_DIR/compiled/graphviz_tmp $BASE_DIR/$
+ cp -aR $CACHE_DIR/compiled/graphviz_tmp/* $BASE_DIR/$INSTALLDIR
 fi
 # done, update envvars again
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:"$BASE_DIR/$GRAPHVIZ_LIBDIR"
