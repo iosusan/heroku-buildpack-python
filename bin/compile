@@ -102,9 +102,13 @@ prepare_workdir() {
 	# $1 is the sourcedir
 	# $2 is the filename
 	# $3 is the destdir
+	echo "creating $3"
 	create_dir $3
+	echo "copying $1/$2 to $3"
 	cp "$1/$2" $3
+	echo "cd into $3"
 	cd $3
+	echo "untarring $2"
 	tar zxvf $2 > /dev/null 2>&1
 	ls -la $3
 	cd -
