@@ -201,10 +201,12 @@ ls $DOWNLOAD_DIR
 ### uncompress files ###
 ########################
 # cp downloaded files to workdirs and uncompress them
+echo "-------> preparing working dirs"
+ls $WORKING_DIR
 prepare_workdir $DOWNLOAD_DIR $GTS_BINARY $GTS_WORKDIR
 ls $GTS_WORKDIR
 prepare_workdir $DOWNLOAD_DIR $GRAPHVIZ_BINARY $GRAPHVIZ_WORKDIR
-ls $GTS_WORKDIR
+ls $GRAPHVIZ_WORKDIR
 
 exit 0
 
