@@ -86,15 +86,14 @@ download_sw() {
 	#$1 is the filename
 	#$2 is the url
 	#$3 is the dest dir
-	echo "checking download $3/$1"
 	if [ ! -f "$3/$1" ]; then
 		# GTS requires curl -L xx > file
 		# http://tldp.org/HOWTO/Bash-Prog-Intro-HOWTO-11.html -> comparing strings using double quotes avoids parse errors
 		if [ "$1" == "gts-0.7.6.tar.gz" ]; then
-			echo " downloading GTS from $GTS_URL/$GTS_BINARY to $s/$GTS_BINARY"
+			echo "          downloading GTS from $GTS_URL/$GTS_BINARY to $s/$GTS_BINARY"
 			curl -L $GTS_URL/$GTS_BINARY > $3/$GTS_BINARY
 		else
-			echo " downloading GRAPHVIZ from $GRAPHVIZ_URL/$GRAPHVIZ_BINARY to $3/$GRAPHVIZ_BINARY"
+			echo "          downloading GRAPHVIZ from $GRAPHVIZ_URL/$GRAPHVIZ_BINARY to $3/$GRAPHVIZ_BINARY"
 			cd $3 && { curl -O "$GRAPHVIZ_URL/$GRAPHVIZ_BINARY" ; cd -; }
 		fi
 	fi
@@ -111,6 +110,7 @@ prepare_workdir() {
 	cp "$1/$2" $3
 	cd $3
 	tar zxvf $2 > /dev/null 2>&1
+	ls -la $2
 	cd -
 }
 
@@ -151,9 +151,9 @@ compile() {
 		create_dir $GRAPHVIZ_INSTALLTMP
 		configure --prefix="/graphviz" --enable-shared=no --enable-static=yes --with-gts=yes > /dev/null 2>&1
 		echo " making"
-		make -j5  > /dev/null 2>&1
+		make -j5  #> /dev/null 2>&1
 		echo " installing to /$2/$GRAPHVIZ_INSTALLTMP"
-		make install DESTDIR="/$2/$GRAPHVIZ_INSTALLTMP" > /dev/null 2>&1
+		make install DESTDIR="/$2/$GRAPHVIZ_INSTALLTMP" #> /dev/null 2>&1
 		ls /$2/$GRAPHVIZ_INSTALLTMP/
 		echo "cleaning temporary stuff: $GRAPHVIZ_WORKDIR"
 		rm -Rf $GRAPHVIZ_WORKDIR
@@ -173,35 +173,27 @@ echo "------> installing GRAPHVIZ"
 ##################################
 ### download files if required ###
 ##################################
-echo "        checking if anything cached"
-echo "         cached downloads"
-echo "         gts"
+echo "-------> downloading if required"
 if [ ! -d $CACHE_DIR/downloads/gts ];then
  # download sw to dir
- echo "          not cached, downloading"
  download_sw $GTS_BINARY $GTS_URL $DOWNLOAD_DIR
  # move to cache dir
  create_dir $CACHE_DIR/downloads/gts
  cp $DOWNLOAD_DIR/$GTS_BINARY $CACHE_DIR/downloads/gts/
 else
- echo "          cached"
  # already cached, copy to $DOWNLOAD_DIR
  cp $CACHE_DIR/downloads/gts/$GTS_BINARY $DOWNLOAD_DIR/
 fi
 
-echo "         graphviz"
 if [ ! -d $CACHE_DIR/downloads/graphviz ]; then
- echo "          not cached, downloading"
  download_sw $GRAPHVIZ_BINARY $GRAPHVIZ_URL $DOWNLOAD_DIR
  # copy to cache dir
  create_dir $CACHE_DIR/downloads/graphviz
  cp $DOWNLOAD_DIR/$GRAPHVIZ_BINARY $CACHE_DIR/downloads/graphviz/
 else
- echo "          cached"
  # copy from cache dir
  cp $CACHE_DIR/downloads/graphviz/$GRAPHVIZ_BINARY $DOWNLOAD_DIR/
 fi
-echo "         finished downloads"
 ls $DOWNLOAD_DIR
 
 ########################
