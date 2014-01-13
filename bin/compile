@@ -70,7 +70,7 @@ indent() {
 create_dir() {
 	echo " (checking dir $1)"
 	if [ ! -d "$1" ]; then
-		echo " $1 not found, creating..."
+		#echo " $1 not found, creating..."
 		mkdir -p "$1"
 	fi
 }
@@ -121,40 +121,33 @@ compile() {
 	if [ "$1" == "$GTS_WORKDIR" ]; then
 		echo "compiling GTS"
 		cd "gts-0.7.6"
-		echo " configuring with prefix=/gts"
-		#create_dir $GTS_INSTALLDIR
-		#create_dir ../$GTS_INSTALLTMP
+		#echo " configuring with prefix=/gts"
 		configure --prefix="/gts" > /dev/null 2>&1
-		echo " making"
+		#echo " making"
 		make -j5 > /dev/null 2>&1
 		# DESTDIR deploys everything to tmpdir $GTS_INSTALLTMP
 		# which is tmp_gts (app/temp/repo.git/gts_tmp)
-		echo " installing to /$2/$GTS_INSTALLTMP"
+		#echo " installing to /$2/$GTS_INSTALLTMP"
 		make install DESTDIR="/$2/$GTS_INSTALLTMP" > /dev/null 2>&1
 		GTS_COMPILATION_SPACE=`du -sh /$2/$GTS_INSTALLTMP| cut -f1 `
 		echo " cleaning temporary stuff: $GTS_WORKDIR, releasing $GTS_COMPILATION_SPACE"
 		rm -Rf $GTS_WORKDIR
-		echo " done!"
+		#echo " done!"
 		
 	else
 		echo "compiling GRAPHVIZ"
 		# check that libgts is available
 		cd "graphviz-2.34.0"
-		echo " configuring with prefix=/graphviz --enable-shared=no --enable-static=yes --with-gts=yes"
-		#create_dir $GRAPHVIZ_INSTALLDIR
-		#create_dir $GRAPHVIZ_INSTALLTMP
+		#echo " configuring with prefix=/graphviz --enable-shared=no --enable-static=yes --with-gts=yes"
 		configure --prefix="/graphviz" --enable-shared=no --enable-static=yes --with-gts=yes > /dev/null 2>&1
-		echo " making"
+		#echo " making"
 		make -j5  > /dev/null 2>&1
-		echo " installing to /$2/$GRAPHVIZ_INSTALLTMP"
+		#echo " installing to /$2/$GRAPHVIZ_INSTALLTMP"
 		make install DESTDIR="/$2/$GRAPHVIZ_INSTALLTMP" > /dev/null 2>&1
-		pwd 
-		echo /$2/$GRAPHVIZ_INSTALLTMP
-		ls /$2/$GRAPHVIZ_INSTALLTMP/
 		GRAPHVIZ_COMPILATION_SPACE=`du -sh . | cut -f1`
 		echo "cleaning temporary stuff: $GRAPHVIZ_WORKDIR, releasing $GRAPHVIZ_COMPILATION_SPACE"
 		rm -Rf $GRAPHVIZ_WORKDIR
-		echo "done!"
+		#echo "done!"
 	fi
 	cd $2
 }
@@ -208,7 +201,7 @@ prepare_workdir $DOWNLOAD_DIR $GRAPHVIZ_BINARY $GRAPHVIZ_WORKDIR
 DOWNLOAD_SPACE=`du -sh $DOWNLOAD_DIR | cut -f1`
 echo "removing $DOWNLOAD_DIR freeing up $DOWNLOAD_SPACE"
 rm -Rf $DOWNLOAD_DIR
-echo "done"
+#echo "done"
 
 # now there sould not be vendor/downloaded dir
 #echo "should not be 'downloaded' dir"
@@ -220,27 +213,27 @@ echo "done"
 echo "-------> compiling"
 
 BASE_DIR=`pwd`
-echo "          gts"
+#echo "          gts"
 if [ ! -d $CACHE_DIR/compiled/gts_tmp ]; then
  # compile GTS
- echo "           not cached (missing CACHE_DIR/compile/gts_tmp dir), compiling"
+ #echo "           not cached (missing CACHE_DIR/compile/gts_tmp dir), compiling"
  # this leaves everything in $WORKING_DIR/$GTS_INSTALLTMP 
- echo "compile $GTS_WORKDIR $BASE_DIR"
+ #echo "compile $GTS_WORKDIR $BASE_DIR"
  compile $GTS_WORKDIR $BASE_DIR
  create_dir $CACHE_DIR/compiled
  # copy to cache dir
- echo "           compiled, copying from $GTS_INSTALLTMP to $CACHE_DIR/compiled"
+ #echo "           compiled, copying from $GTS_INSTALLTMP to $CACHE_DIR/compiled"
  cp -aR $GTS_INSTALLTMP $CACHE_DIR/compiled/
- echo "           contents of CACHE_DIR/compiled"
- ls $CACHE_DIR/compiled/
+ #echo "           contents of CACHE_DIR/compiled"
+ #ls $CACHE_DIR/compiled/
 else
  # already cached, copy from cache
- echo "           cached, copying from $CACHE_DIR/compiled/gts_tmp/gts/* to $BASE_DIR/$INSTALLDIR/gts"
+ #echo "           cached, copying from $CACHE_DIR/compiled/gts_tmp/gts/* to $BASE_DIR/$INSTALLDIR/gts"
  #ls $CACHE_DIR/compiled/gts_tmp/
  #ls $CACHE_DIR/compiled/gts_tmp/gts/
  # this copies everything from gts to 'vendor/tools'
  cp -aR $CACHE_DIR/compiled/gts_tmp/gts/* $BASE_DIR/$INSTALLDIR/gts
- ls $BASE_DIR/$INSTALLDIR/gts
+ #ls $BASE_DIR/$INSTALLDIR/gts
 fi
 
 # once installed, update library path
@@ -258,17 +251,17 @@ if [ ! -d $CACHE_DIR/compiled/graphviz_tmp ]; then
  compile $GRAPHVIZ_WORKDIR $BASE_DIR
  create_dir $CACHE_DIR/compiled
  # copy to cache dir
- echo "          compiled, copying from $GRAPHVIZ_INSTALLTMP to $CACHE_DIR/compiled"
+ #echo "          compiled, copying from $GRAPHVIZ_INSTALLTMP to $CACHE_DIR/compiled"
  cp -aR $GRAPHVIZ_INSTALLTMP $CACHE_DIR/compiled/
- echo "          contents of CACHE_DIR/compiled"
- ls $CACHE_DIR/compiled/
+ #echo "          contents of CACHE_DIR/compiled"
+ #ls $CACHE_DIR/compiled/
 else
  # already cached, copy from cache
- echo "          cached, copying from $CACHE_DIR/compiled/graphviz_tmp/* to $BASE_DIR/$INSTALLDIR"
+ #echo "          cached, copying from $CACHE_DIR/compiled/graphviz_tmp/* to $BASE_DIR/$INSTALLDIR"
  #ls $CACHE_DIR/compiled/graphviz_tmp/
  #ls $CACHE_DIR/compiled/graphviz_tmp/graphviz/
  cp -aR $CACHE_DIR/compiled/graphviz_tmp/graphviz/* $BASE_DIR/$INSTALLDIR/graphviz
- ls $BASE_DIR/$INSTALLDIR/graphviz
+ #ls $BASE_DIR/$INSTALLDIR/graphviz
 fi
 
 # done, update envvars again
@@ -344,14 +337,14 @@ fi
 
 # try to get .heroku dir from CACHE_DIR
 # else create an empty one
-echo "preparing python runtime"
+#echo "preparing python runtime"
 
 mkdir -p $(dirname $PROFILE_PATH)
 if [ -d $CACHE_DIR/.heroku ]; then #################################
  echo "retrieving .heroku from cache"
  cp -aR $CACHE_DIR/.heroku .
- echo "done, contents are"
- ls -la .heroku/
+ #echo "done, contents are"
+ #ls -la .heroku/
 else
  echo "not cached"
  mkdir .heroku
@@ -384,6 +377,9 @@ else
  fi
 fi # end ###########################################################
 
+# exit here by now
+exit 0
+
 WORKING_DIR=$(pwd)
 
 # check if required distribute and pip
@@ -400,7 +396,7 @@ cd $WORKING_DIR
 source $BIN_DIR/steps/pylibmc
 
 echo "installing dependencies with pip"
-$WORKING_DIR/.heroku/python/bin/pip install -r requirements.txt --exists-action=w --src=./.heroku/src | cleanup  # | indent
+$WORKING_DIR/.heroku/python/bin/pip install -r requirements.txt --exists-action=w --src=./.heroku/src & 
 
 # Set context environment variables.
 set-env PATH '$HOME/.heroku/python/bin:$HOME/tools/graphviz/bin:$PATH'
