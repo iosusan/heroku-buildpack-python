@@ -201,11 +201,12 @@ ls $DOWNLOAD_DIR
 ### uncompress files ###
 ########################
 # cp downloaded files to workdirs and uncompress them
-pwd
 prepare_workdir $DOWNLOAD_DIR $GTS_BINARY $GTS_WORKDIR
-pwd
+ls $GTS_WORKDIR
 prepare_workdir $DOWNLOAD_DIR $GRAPHVIZ_BINARY $GRAPHVIZ_WORKDIR
-pwd
+ls $GTS_WORKDIR
+
+exit 0
 
 # i would not need anymore the download files in workingdir, so remove them
 DOWNLOAD_SPACE=`du -sh $DOWNLOAD_DIR | cut -f1`
