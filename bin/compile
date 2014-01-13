@@ -401,7 +401,7 @@ else
 fi # end ###########################################################
 
 # exit here by now
-exit 0
+#exit 0
 
 WORKING_DIR=$(pwd)
 
@@ -419,7 +419,7 @@ cd $WORKING_DIR
 source $BIN_DIR/steps/pylibmc
 
 echo "installing dependencies with pip"
-$WORKING_DIR/.heroku/python/bin/pip install -r requirements.txt --exists-action=w --src=./.heroku/src & 
+$WORKING_DIR/.heroku/python/bin/pip install -r requirements.txt --exists-action=w --src=./.heroku/src &> /dev/null 
 
 # Set context environment variables.
 set-env PATH '$HOME/.heroku/python/bin:$HOME/tools/graphviz/bin:$PATH'
