@@ -234,6 +234,7 @@ else
  # this copies everything from gts to 'vendor/tools'
  create_dir $BASE_DIR/$INSTALLDIR/gts
  cp -aR $CACHE_DIR/compiled/gts_tmp/* $BASE_DIR/$INSTALLDIR/gts
+ GTS_CACHED=1
 fi
 
 # once installed, update library path
@@ -259,6 +260,7 @@ else
  echo "(graphviz cached)"
  create_dir $BASE_DIR/$INSTALLDIR/graphviz
  cp -aR $CACHE_DIR/compiled/graphviz_tmp/* $BASE_DIR/$INSTALLDIR/graphviz
+ GRAPHVIZ_CACHED=1
 fi
 
 # done, update envvars again
@@ -277,10 +279,21 @@ export PATH=$PATH:"$BASE_DIR/$GRAPHVIZ_BINDIR"
 echo "-------> adding gts and graphviz to slug "
 # ./graphviz_tmp/graphviz
 create_dir $BUILD_DIR/tools
-ls $GTS_INSTALLTMP/
-cp -aR $GTS_INSTALLTMP/gts $BUILD_DIR/tools/
+# this does work for the first run (appcreate) but fails for second (missing $GTS_INSTALLTMP)
+# because no compilation is done and therefore there is nothing in $GTS_INSTALLTMP
+#if [[ -v GTS_CACHED ]] ; ######################################################################################## 
+if [ -d $GTS_INSTALLTMP ]; then
+ ls $GTS_INSTALLTMP/
+ cp -aR $GTS_INSTALLTMP/gts $BUILD_DIR/tools/
+else
+ # nothing in $GTS_INSTALLTMP, take it from $BASE_DIR/$INSTALDIR/gts
+ cp -aR $BASE_DIR/$INSTALLDIR/gts $BUILD_DIR/tools/
+fi
+
 ls $GRAPHVIZ_INSTALLTMP/
 cp -aR $GRAPHVIZ_INSTALLTMP/graphviz $BUILD_DIR/tools/
+
+
 # now i have all my stuff under .tools dir
 # be careful to add the correct PATH to the application PATH=$PATH:/app/.tools/graphviz/bin
 
