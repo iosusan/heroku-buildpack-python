@@ -123,19 +123,14 @@ compile() {
 		cd "gts-0.7.6"
 		echo " configuring with prefix=/gts"
 		#create_dir $GTS_INSTALLDIR
-		create_dir $GTS_INSTALLTMP
-		# this configures so that gts will be in
-		# /app/tools/vendor/gts
+		#create_dir ../$GTS_INSTALLTMP
 		configure --prefix="/gts" > /dev/null 2>&1
-		#configure --prefix="$GTS_INSTALLDIR" > /dev/null 2>&1
 		echo " making"
 		make -j5 > /dev/null 2>&1
 		# DESTDIR deploys everything to tmpdir $GTS_INSTALLTMP
-		# was $2/$GTS_INSTALLDIR
+		# which is tmp_gts (app/temp/repo.git/gts_tmp)
 		echo " installing to /$2/$GTS_INSTALLTMP"
 		make install DESTDIR="/$2/$GTS_INSTALLTMP" > /dev/null 2>&1
-		pwd
-		echo /$2/$GTS_INSTALLTMP
 		GTS_COMPILATION_SPACE=`du -sh /$2/$GTS_INSTALLTMP| cut -f1 `
 		echo " cleaning temporary stuff: $GTS_WORKDIR, releasing $GTS_COMPILATION_SPACE"
 		rm -Rf $GTS_WORKDIR
@@ -147,7 +142,7 @@ compile() {
 		cd "graphviz-2.34.0"
 		echo " configuring with prefix=/graphviz --enable-shared=no --enable-static=yes --with-gts=yes"
 		#create_dir $GRAPHVIZ_INSTALLDIR
-		create_dir $GRAPHVIZ_INSTALLTMP
+		#create_dir $GRAPHVIZ_INSTALLTMP
 		configure --prefix="/graphviz" --enable-shared=no --enable-static=yes --with-gts=yes > /dev/null 2>&1
 		echo " making"
 		make -j5  > /dev/null 2>&1
@@ -216,8 +211,8 @@ rm -Rf $DOWNLOAD_DIR
 echo "done"
 
 # now there sould not be vendor/downloaded dir
-echo "should not be 'downloaded' dir"
-ls vendor/
+#echo "should not be 'downloaded' dir"
+#ls vendor/
 
 #####################
 ### compile files ###
@@ -230,10 +225,8 @@ if [ ! -d $CACHE_DIR/compiled/gts_tmp ]; then
  # compile GTS
  echo "           not cached (missing CACHE_DIR/compile/gts_tmp dir), compiling"
  # this leaves everything in $WORKING_DIR/$GTS_INSTALLTMP 
-echo "compile $GTS_WORKDIR $BASE_DIR"
+ echo "compile $GTS_WORKDIR $BASE_DIR"
  compile $GTS_WORKDIR $BASE_DIR
-ls -la $WORKDIR
-ls -la $WORKDIR/$GTS_INSTALLTMP
  create_dir $CACHE_DIR/compiled
  # copy to cache dir
  echo "           compiled, copying from $GTS_INSTALLTMP to $CACHE_DIR/compiled"
@@ -275,6 +268,7 @@ else
  #ls $CACHE_DIR/compiled/graphviz_tmp/
  #ls $CACHE_DIR/compiled/graphviz_tmp/graphviz/
  cp -aR $CACHE_DIR/compiled/graphviz_tmp/graphviz/* $BASE_DIR/$INSTALLDIR/graphviz
+ ls $BASE_DIR/$INSTALLDIR/graphviz
 fi
 
 # done, update envvars again
@@ -284,6 +278,10 @@ export C_INCLUDE_PATH=$C_INCLUDE_PATH:"$BASE_DIR/$GRAPHVIZ_INCLUDEDIR"
 export CPLUS_INCLUDE_PATH=$CPLUS_INCLUDE_PATH:"$BASE_DIR/$GRAPHVIZ_INCLUDEDIR"
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:"$BASE_DIR/$GRAPHVIZ_PKGDIR"
 export PATH=$PATH:"$BASE_DIR/$GRAPHVIZ_BINDIR"
+
+# so far, everything should be installed in
+# gts_tmp
+# graphviz_tmp
 
 # now, add the tools dir to slug
 echo "       adding GTS and GRAPHVIZ to slug "
