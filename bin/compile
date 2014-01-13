@@ -422,7 +422,8 @@ echo "installing dependencies with pip"
 $WORKING_DIR/.heroku/python/bin/pip install -r requirements.txt --exists-action=w --src=./.heroku/src &> /dev/null 
 
 # Set context environment variables.
-set-env PATH '$HOME/.heroku/python/bin:$HOME/tools/graphviz/bin:$PATH'
+#set-env PATH '$HOME/.heroku/python/bin:$HOME/tools/graphviz/bin:$PATH'
+set-env PATH '/app/.heroku/python/bin:/app/tools/graphviz/bin:$PATH'
 set-env PYTHONUNBUFFERED true
 set-env PYTHONHOME /app/.heroku/python
 set-default-env LIBRARY_PATH /app/.heroku/vendor/lib:/app/tools/graphviz/lib:/app/tools/gts/lib
@@ -440,6 +441,8 @@ echo "########## contents of BUILD_DIR"
 ls -lR $BUILD_DIR
 echo "########## contents of BASE:DIR"
 ls -lR $BASE_DIR
+
+# check path
 
 
 exit 0
