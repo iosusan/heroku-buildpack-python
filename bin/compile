@@ -228,7 +228,7 @@ if [ ! -d $CACHE_DIR/compiled/gts_tmp ]; then
  #ls $CACHE_DIR/compiled/
 else
  # already cached, copy from cache
- echo "(gts cached")
+ echo "(gts cached)"
  # this copies everything from gts to 'vendor/tools'
  create_dir $BASE_DIR/$INSTALLDIR/gts
  cp -aR $CACHE_DIR/compiled/gts_tmp/* $BASE_DIR/$INSTALLDIR/gts
