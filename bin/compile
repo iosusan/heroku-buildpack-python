@@ -233,7 +233,7 @@ else
  #ls $CACHE_DIR/compiled/gts_tmp/
  #ls $CACHE_DIR/compiled/gts_tmp/gts/
  # this copies everything from gts to 'vendor/tools'
- cp -aR $CACHE_DIR/compiled/gts_tmp/gts/* $BASE_DIR/$INSTALLDIR/gts
+ cp -aR $CACHE_DIR/compiled/gts_tmp/* $BASE_DIR/$INSTALLDIR/gts
  #ls $BASE_DIR/$INSTALLDIR/gts
 fi
 
@@ -261,7 +261,7 @@ else
  #echo "          cached, copying from $CACHE_DIR/compiled/graphviz_tmp/* to $BASE_DIR/$INSTALLDIR"
  #ls $CACHE_DIR/compiled/graphviz_tmp/
  #ls $CACHE_DIR/compiled/graphviz_tmp/graphviz/
- cp -aR $CACHE_DIR/compiled/graphviz_tmp/graphviz/* $BASE_DIR/$INSTALLDIR/graphviz
+ cp -aR $CACHE_DIR/compiled/graphviz_tmp/* $BASE_DIR/$INSTALLDIR/graphviz
  #ls $BASE_DIR/$INSTALLDIR/graphviz
 fi
 
