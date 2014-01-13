@@ -323,7 +323,7 @@ echo "-------> libs compiled"
 echo "#############################"
 echo " let's go for python environment"
 
-
+exit 0
 echo "------> installing PYTHON"
 
 unset GIT_DIR PYTHONHOME PYTHONPATH LD_LIBRARY__PATH LIBRARY_PATH
