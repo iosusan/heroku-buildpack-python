@@ -338,6 +338,7 @@ export LIBRARY_PATH=/app/.heroku/vendor/lib:$BUILD_DIR/.heroku/vendor/lib
 export LD_LIBRARY_PATH=/app/.heroku/vendor/lib:$BUILD_DIR/.heroku/vendor/lib
 export PKG_CONFIG_PATH=/app/.heroku/vendor/lib/pkg-config:$BUILD_DIR/.heroku/vendor/lib/pkg-config
 
+VIRTUALENV_LOC=".heroku/venv"
 DEFAULT_PYTHON_VERSION="python-2.7.4"
 PYTHON_EXE="/app/.heroku/python/bin/python"
 PIP_VERSION="1.3.1"
@@ -364,13 +365,15 @@ fi
 # else create an empty one
 #echo "preparing python runtime"
 
-mkdir -p $(dirname $PROFILE_PATH)
+#mkdir -p $(dirname $PROFILE_PATH)
 if [ -d $CACHE_DIR/.heroku ]; then #################################
  echo "retrieving .heroku from cache"
  cp -aR $CACHE_DIR/.heroku .
+ cp -aR $CACHE_DIR/.profile.d .
 else
  echo "not cached"
  mkdir .heroku
+ mkdir -p $(dirname $PROFILE_PATH)
  PYTHON_VERSION=$(cat runtime.txt)
  if [ -f .heroku/python-version ]; then
   if [ ! $(cat .heroku/python-version) = $PYTHON_VERSION ]; then
@@ -393,6 +396,7 @@ else
   echo "downloaded python runtime, copying to CACHE_DIR"
   # copy everything to cache
   cp -aR .heroku $CACHE_DIR/
+  cp -aR .profile.d $CACHE_DIR/
   echo "CACHE_DIR contains:"
   ls -la $CACHE_DIR/
  else
