@@ -411,6 +411,7 @@ mkdir -p $(dirname $PROFILE_PATH)
 PYTHON_VERSION=$(cat runtime.txt)
 curl http://envy-versions.s3.amazonaws.com/$PYTHON_VERSION.tar.bz2 -s | tar jx &> /dev/null
 mv python .heroku/python
+echo $PYTHON_VERSION > .heroku/python-version
 ############
 
 set +e
@@ -424,11 +425,11 @@ cd $WORKING_DIR
 
 echo "installing pip"
 cd $ROOT_DIR/vendor/pip-$PIP_VERSION/
-python setup.py install #&> /dev/null
+python setup.py install &> /dev/null
 cd $WORKING_DIR
 
-set -e
-hash -r
+#set -e
+#hash -r
 
 # before installing dependencies, export correct paths to env
 #source $BIN_DIR/steps/pylibmc
