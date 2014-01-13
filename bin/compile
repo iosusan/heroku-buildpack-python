@@ -137,7 +137,7 @@ compile() {
 		# was $2/$GTS_INSTALLDIR
 		echo " installing to /$2/$GTS_INSTALLTMP"
 		make install DESTDIR="/$2/$GTS_INSTALLTMP" > /dev/null 2>&1
-		echo /$2/$GTS_INSTALLTMP
+		ls /$2/$GTS_INSTALLTMP
 		echo " cleaning temporary stuff: $GTS_WORKDIR"
 		rm -Rf $GTS_WORKDIR
 		echo " done!"
