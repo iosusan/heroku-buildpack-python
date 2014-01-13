@@ -366,45 +366,52 @@ fi
 #echo "preparing python runtime"
 
 #mkdir -p $(dirname $PROFILE_PATH)
-if [ -d $CACHE_DIR/.heroku ]; then #################################
- echo "retrieving .heroku from cache"
- cp -aR $CACHE_DIR/.heroku .
- cp -aR $CACHE_DIR/.profile.d .
-else
- echo "not cached"
- mkdir .heroku
- mkdir -p $(dirname $PROFILE_PATH)
- PYTHON_VERSION=$(cat runtime.txt)
- if [ -f .heroku/python-version ]; then
-  if [ ! $(cat .heroku/python-version) = $PYTHON_VERSION ]; then
-      echo "Found $(cat .heroku/python-version), removing."
-      rm -fr .heroku/python
-  else
-    echo "Found previous installation for $PYTHON_VERSION"
-    SKIP_INSTALL=1
-  fi
- fi
- if [ ! "$SKIP_INSTALL" ]; then
-  echo "installing python $PYTHON_VERSION"
-  curl http://envy-versions.s3.amazonaws.com/$PYTHON_VERSION.tar.bz2 -s | tar jx &> /dev/null
-  if [[ $? != 0 ]] ; then
-	echo "ERROR: requested runtime ($PYTHON_VERSION) was not found."
-	exit 1
-  fi
-  mv python .heroku/python
-  echo $PYTHON_VERSION > .heroku/python-version
-  echo "downloaded python runtime, copying to CACHE_DIR"
+#if [ -d $CACHE_DIR/.heroku ]; then #################################
+# echo "retrieving .heroku from cache"
+# cp -aR $CACHE_DIR/.heroku .
+# cp -aR $CACHE_DIR/.profile.d .
+#else
+# echo "not cached"
+# mkdir .heroku
+# mkdir -p $(dirname $PROFILE_PATH)
+# PYTHON_VERSION=$(cat runtime.txt)
+# if [ -f .heroku/python-version ]; then
+#  if [ ! $(cat .heroku/python-version) = $PYTHON_VERSION ]; then
+#      echo "Found $(cat .heroku/python-version), removing."
+#      rm -fr .heroku/python
+#  else
+#    echo "Found previous installation for $PYTHON_VERSION"
+#    SKIP_INSTALL=1
+#  fi
+# fi
+# if [ ! "$SKIP_INSTALL" ]; then
+#  echo "installing python $PYTHON_VERSION"
+#  curl http://envy-versions.s3.amazonaws.com/$PYTHON_VERSION.tar.bz2 -s | tar jx &> /dev/null
+#  if [[ $? != 0 ]] ; then
+#	echo "ERROR: requested runtime ($PYTHON_VERSION) was not found."
+#	exit 1
+#  fi
+#  mv python .heroku/python
+#  echo $PYTHON_VERSION > .heroku/python-version
+#  echo "downloaded python runtime, copying to CACHE_DIR"
   # copy everything to cache
-  cp -aR .heroku $CACHE_DIR/
-  cp -aR .profile.d $CACHE_DIR/
-  echo "CACHE_DIR contains:"
-  ls -la $CACHE_DIR/
- else
-  echo "Using Python runtime ($PYTHON_VERSION)"
- fi
-fi # end ###########################################################
+#  cp -aR .heroku $CACHE_DIR/
+#  cp -aR .profile.d $CACHE_DIR/
+#  echo "CACHE_DIR contains:"
+#  ls -la $CACHE_DIR/
+# else
+#  echo "Using Python runtime ($PYTHON_VERSION)"
+# fi
+#fi 
+# end ###########################################################
 
-
+#############3
+mkdir .heroku
+mkdir -p $(dirname $PROFILE_PATH)
+PYTHON_VERSION=$(cat runtime.txt)
+curl http://envy-versions.s3.amazonaws.com/$PYTHON_VERSION.tar.bz2 -s | tar jx &> /dev/null
+mv python .heroku/python
+############
 
 set +e
 WORKING_DIR=$(pwd)
