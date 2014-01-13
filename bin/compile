@@ -204,18 +204,12 @@ ls $DOWNLOAD_DIR
 ########################
 # cp downloaded files to workdirs and uncompress them
 echo "-------> preparing working dirs"
-# $WORKDIR
-echo $WORKDIR
-ls $WORKDIR
-echo "vendor"
-ls vendor/
-echo "prepare GTS_BINARY"
 # copy GTS_BINARY from DOWNLOAD_DIR to GTS_WORKDIR, then uncompress it and remove tarball
 prepare_workdir $DOWNLOAD_DIR $GTS_BINARY $GTS_WORKDIR
 # there shuld be a gts-0.7.6 dir under GTS_WORKDIR
-ls $GTS_WORKDIR/
+ls $GTS_WORKDIR/gts-0.7.6/
 prepare_workdir $DOWNLOAD_DIR $GRAPHVIZ_BINARY $GRAPHVIZ_WORKDIR
-ls $GRAPHVIZ_WORKDIR
+ls $GRAPHVIZ_WORKDIR/graphviz-2.34.0/
 
 exit 0
 
