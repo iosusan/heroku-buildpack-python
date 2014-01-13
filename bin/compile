@@ -133,7 +133,8 @@ compile() {
 		echo " installing to /$2/$GTS_INSTALLTMP"
 		make install DESTDIR="/$2/$GTS_INSTALLTMP" > /dev/null 2>&1
 		ls /$2/$GTS_INSTALLTMP
-		GTS_COMPILATION_SPACE=`du -sh ./$GTS_WORKDIR| cut -f1 `
+		ls $GTS_INSTALLTMP
+		GTS_COMPILATION_SPACE=`du -sh .| cut -f1 `
 		echo " cleaning temporary stuff: $GTS_WORKDIR, releasing $GTS_COMPILATION_SPACE"
 		rm -Rf $GTS_WORKDIR
 		echo " done!"
@@ -151,7 +152,7 @@ compile() {
 		echo " installing to /$2/$GRAPHVIZ_INSTALLTMP"
 		make install DESTDIR="/$2/$GRAPHVIZ_INSTALLTMP" #> /dev/null 2>&1
 		ls /$2/$GRAPHVIZ_INSTALLTMP/
-		GRAPHVIZ_COMPILATION_SPACE=`du -sh ./$GRAPHVIZ_WORKDIR | cut -f1`
+		GRAPHVIZ_COMPILATION_SPACE=`du -sh . | cut -f1`
 		echo "cleaning temporary stuff: $GRAPHVIZ_WORKDIR, releasing $GRAPHVIZ_COMPILATION_SPACE"
 		rm -Rf $GRAPHVIZ_WORKDIR
 		echo "done!"
