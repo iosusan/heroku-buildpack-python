@@ -284,30 +284,26 @@ export PATH=$PATH:"$BASE_DIR/$GRAPHVIZ_BINDIR"
 # graphviz_tmp
 
 # now, add the tools dir to slug
-echo "       adding GTS and GRAPHVIZ to slug "
+echo "-------> adding gts and graphviz to slug "
 # ./graphviz_tmp/graphviz
-echo "graphviz_tmp/ `ls graphviz_tmp/`"
-echo $GRAPHVIZ_INSTALLTMP
-# ./gts_tmp
-ls gts_tmp/gts
-echo "###"
 create_dir $BUILD_DIR/tools
-ls $BUILD_DIR/tools/
 cp -aR $GTS_INSTALLTMP/gts $BUILD_DIR/tools/
-ls $BUILD_DIR/tools/
 cp -aR $GRAPHVIZ_INSTALLTMP/graphviz $BUILD_DIR/tools/
-echo "       contents of BUILD_DIR/tools"
-ls $BUILD_DIR/tools/
 # now i have all my stuff under .tools dir
 # be careful to add the correct PATH to the application PATH=$PATH:/app/.tools/graphviz/bin
-
 
 # remove vendor dir
 VENDOR_DIR_SPACE=`du -sh vendor | cut -f1`
 echo "removing 'vendor' dir, freeing up $VENDOR_DIR_SPACE"
 rm -Rf vendor
-exit 0
-echo " libs compiled"
+# remove tmp installdirrs gts_tmp and graphviz_tmp
+TMPGTS_SPACE=`du -sh gts_tmp | cut -f1`
+TMPGRAPHVIZ_SPACE=`du -sh graphviz_tmp | cut -f1`
+echo "removing 'gts_tmp' and 'graphviz_tmp' dirs, freeing up $TMPGTS_SPACE + $TMPGRAPHVIZ_SPACE"
+rm -Rf gts_tmp
+rm -Rf graphviz_tmp
+ 
+echo "-------> libs compiled"
 echo "#############################"
 echo " let's go for python environment"
 
