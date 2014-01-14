@@ -18,7 +18,61 @@ BUILD_DIR=$1
 CACHE_DIR=$2
 ENV_FILE=$3
 
+########################################################################
+# install gts and graphviz
+########################################################################
+download_gts() {
+	#$1 is the destination dir
+	# download to tmp dir
+	mkdir -p tmp_gts
+	cd tmp_gts
+	curl -L http://downloads.sourceforge.net/project/gts/gts/0.7.6/gts-0.7.6.tar.gz > gts-0.7.6.tar.gz
+	# untarr it
+	tar zxvf gts-0.7.6.tar.gz
+	# remove compressed
+	rm gts-0.7.6.tar.gz
+	# move uncompressed to destination dir
+	mv gts-0.7.6/* $1
+	# remove tmp dir
+	cd -
+	rm -R tmp_gts
+}
 
+download_graphviz() {
+	# $1 is the dest dir
+	mkdir -p tmp_graphviz
+	cd tmp_graphviz
+	curl -O http://www.graphviz.org/pub/graphviz/stable/SOURCES/graphviz-2.34.0.tar.gz
+	# untarr
+	tar zxvf graphviz-2.34.tar.gz
+	# remove compressed
+	rm graphviz-2.34.tar.gz
+	# move uncoimpressed to dest dir
+	mv graphviz-2.34.0/* $1
+	# remove tmp dir
+	cd -
+	rm -R tmp_graphviz
+}
+
+DOWNLOAD_DIR=$CACHE_DIR/downloads
+if [ ! -d $DOWNLOAD_DIR ]; then
+	mkdir -p $DOWNLOAD_DIR
+fi
+
+if [ ! -d $CACHE_DIR/vendor/gts ]; then
+ download_gts $CACHE_DIR/vendor/gts
+ ls $CACHE_DIR/vendor/gts/
+fi
+if [ ! -d $CACHE_vendor/graphviz ]; then
+ download_graphviz $CACHE_DIR/vendor/graphviz
+ ls $CACHE_DIR/vendor/graphviz
+fi
+
+exit 0
+######################################################################
+######################################################################
+######################################################################
+# then install python stuff
 
 CACHED_DIRS=".heroku"
 
