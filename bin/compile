@@ -439,7 +439,7 @@ cd $WORKING_DIR
 echo "installing dependencies with pip"
 
 #pip install -r requirements.txt --exists-action=w --src=./.heroku/src &> /dev/null
-$WORKING_DIR/.heroku/python/bin/pip install -r requirements.txt --exists-action=w --src=./.heroku/src #&> /dev/null 
+$WORKING_DIR/.heroku/python/bin/pip install -r requirements.txt --exists-action=w --src=./.heroku/src &> /dev/null 
 
 # Set context environment variables.
 set-env PATH '$HOME/.heroku/python/bin:$HOME/tools/graphviz/bin:$PATH'
