@@ -28,7 +28,7 @@ download_gts() {
 	cd tmp_gts
 	curl -L http://downloads.sourceforge.net/project/gts/gts/0.7.6/gts-0.7.6.tar.gz > gts-0.7.6.tar.gz
 	# untarr it
-	tar zxvf gts-0.7.6.tar.gz > /dev/null 2 >&1
+	tar zxvf gts-0.7.6.tar.gz > /dev/null 2>&1
 	# remove compressed
 	rm gts-0.7.6.tar.gz
 	# move uncompressed to destination dir
