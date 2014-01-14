@@ -329,8 +329,8 @@ echo "------> installing PYTHON"
 
 unset GIT_DIR PYTHONHOME PYTHONPATH LD_LIBRARY__PATH LIBRARY_PATH
 
-export PATH=/app/.heroku/python/bin:$BUILD_DIR/.heroku/python/bin:/app/.heroku/vendor/bin:$BUILD_DIR/.heroku/vendor/bin:$PATH
-#export PATH=$BUILD_DIR/.heroku/python/bin:$BUILD_DIR/.heroku/vendor/bin:$PATH
+#export PATH=/app/.heroku/python/bin:$BUILD_DIR/.heroku/python/bin:/app/.heroku/vendor/bin:$BUILD_DIR/.heroku/vendor/bin:$PATH
+export PATH=$BUILD_DIR/.heroku/python/bin:$BUILD_DIR/.heroku/vendor/bin:$PATH
 #export PATH=/app/.heroku/python/bin:/app/.heroku/vendor/bin:$PATH
 export PYTHONUNBUFFERED=1
 export LANG=en_US.UTF-8
@@ -415,18 +415,14 @@ PYTHON_VERSION=$(cat runtime.txt)
 curl http://envy-versions.s3.amazonaws.com/$PYTHON_VERSION.tar.bz2 -s | tar jx &> /dev/null
 mv python .heroku/python
 echo $PYTHON_VERSION > .heroku/python-version
+
 ############
 
 WORKING_DIR=$(pwd)
 
 # check if required distribute and pip
 echo "installing distribute"
-echo "which python `which python`"
-#echo "/app/.heroku/python/bin: `ls /app/.heroku/python/bin/`"
-echo `find / -name "python" -print`
-echo "PATH: $PATH"
-echo "PYTHONPATH: $PYTHONPATH"
-echo "PYTHONHOME: $PYTHONHOME"
+ls /app/
 cd $ROOT_DIR/vendor/distribute-$DISTRIBUTE_VERSION/
 python setup.py install # &> /dev/null
 cd $WORKING_DIR
@@ -443,9 +439,10 @@ cd $WORKING_DIR
 #source $BIN_DIR/steps/pylibmc
 
 echo "installing dependencies with pip"
-
+ls /app/
 #pip install -r requirements.txt --exists-action=w --src=./.heroku/src &> /dev/null
-$WORKING_DIR/.heroku/python/bin/pip install -r requirements.txt --exists-action=w --src=./.heroku/src &> /dev/null 
+#$WORKING_DIR/
+/app/.heroku/python/bin/pip install -r requirements.txt --exists-action=w --src=./.heroku/src &> /dev/null 
 
 # Set context environment variables.
 set-env PATH '$HOME/.heroku/python/bin:$HOME/tools/graphviz/bin:$PATH'
