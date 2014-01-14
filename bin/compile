@@ -427,7 +427,7 @@ cd $WORKING_DIR
 
 echo "installing pip"
 cd $ROOT_DIR/vendor/pip-$PIP_VERSION/
-python setup.py install # &> /dev/null
+python setup.py install &> /dev/null
 cd $WORKING_DIR
 
 #set -e
