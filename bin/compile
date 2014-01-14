@@ -338,8 +338,8 @@ bpwatch stop collectstatic
 set-env PATH '$HOME/.heroku/python/bin:$HOME/tools/graphviz/bin:$PATH'
 set-env PYTHONUNBUFFERED true
 set-env PYTHONHOME /app/.heroku/python
-set-default-env LIBRARY_PATH /app/.heroku/vendor/lib:/app/.graphviz/lib:/app/.gts/lib
-set-default-env LD_LIBRARY_PATH /app/.heroku/vendor/lib:/app/.graphviz/lib:/app/.gts/lib
+set-default-env LIBRARY_PATH /app/.heroku/vendor/lib:/app/tools/graphviz/lib:/app/tools/gts/lib
+set-default-env LD_LIBRARY_PATH /app/.heroku/vendor/lib:/app/tools/graphviz/lib:/app/tools/gts/lib
 set-default-env LANG en_US.UTF-8
 set-default-env PYTHONHASHSEED random
 set-default-env PYTHONPATH /app/
