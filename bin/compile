@@ -32,6 +32,7 @@ download_gts() {
 	# remove compressed
 	rm gts-0.7.6.tar.gz
 	# move uncompressed to destination dir
+	mkdir -p $1
 	mv gts-0.7.6/* $1
 	# remove tmp dir
 	cd -
@@ -48,6 +49,7 @@ download_graphviz() {
 	# remove compressed
 	rm graphviz-2.34.tar.gz
 	# move uncoimpressed to dest dir
+	mkdir -p $1
 	mv graphviz-2.34.0/* $1
 	# remove tmp dir
 	cd -
