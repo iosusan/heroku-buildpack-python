@@ -113,7 +113,6 @@ fi
 mkdir -p $BUILD_DIR/tools
 cp -aR $CACHE_DIR/vendor/built_gts/gts $BUILD_DIR/tools
 cp -aR $CACHE_DIR/vendor/built_graphviz/graphviz $BUILD_DIR/tools
-exit 0
 ######################################################################
 ######################################################################
 ######################################################################
