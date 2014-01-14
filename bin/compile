@@ -283,7 +283,7 @@ create_dir $BUILD_DIR/tools
 # because no compilation is done and therefore there is nothing in $GTS_INSTALLTMP
 #if [[ -v GTS_CACHED ]] ; ######################################################################################## 
 if [ -d $GTS_INSTALLTMP ]; then
- ls $GTS_INSTALLTMP/
+ #ls $GTS_INSTALLTMP/
  cp -aR $GTS_INSTALLTMP/gts $BUILD_DIR/tools/
 else
  # nothing in $GTS_INSTALLTMP, take it from $BASE_DIR/$INSTALDIR/gts
@@ -291,7 +291,7 @@ else
 fi
 
 if [ -d $GRAPHVIZ_INSTALLTMP ]; then
- ls $GRAPHVIZ_INSTALLTMP/
+ #ls $GRAPHVIZ_INSTALLTMP/
  cp -aR $GRAPHVIZ_INSTALLTMP/graphviz $BUILD_DIR/tools/
 else
  # nothing in $GRAPHVIZ_INSTALLTMP, take it from $BASE_DIR/$INSTALLDIR/graphviz
@@ -424,12 +424,12 @@ echo "$ROOT_DIR/vendor/distribute-$DISTRIBUTE_VERSION"
 ls $ROOT_DIR
 
 cd $ROOT_DIR/vendor/distribute-$DISTRIBUTE_VERSION/
-python setup.py install # &> /dev/null
+.heroku/python setup.py install # &> /dev/null
 cd $WORKING_DIR
 
 echo "installing pip"
 cd $ROOT_DIR/vendor/pip-$PIP_VERSION/
-python setup.py install # &> /dev/null
+.heroku/python setup.py install # &> /dev/null
 cd $WORKING_DIR
 
 #set -e
@@ -441,7 +441,7 @@ cd $WORKING_DIR
 echo "installing dependencies with pip"
 
 #pip install -r requirements.txt --exists-action=w --src=./.heroku/src &> /dev/null
-$WORKING_DIR/.heroku/python/bin/pip install -r requirements.txt --exists-action=w --src=./.heroku/src &> /dev/null 
+$WORKING_DIR/.heroku/python/bin/pip install -r requirements.txt --exists-action=w --src=./.heroku/src #&> /dev/null 
 
 # Set context environment variables.
 #set-env PATH '$HOME/.heroku/python/bin:$HOME/tools/graphviz/bin:$PATH'
