@@ -95,6 +95,7 @@ if [ ! -d $CACHE_vendor/graphviz ]; then
 fi
 
 if [ ! -d $CACHE_DIR/vendor/built_gts ]; then
+ echo "building gts"
  build_gts $CACHE_DIR/vendor/gts $CACHE_DIR/vendor/built_gts
  ls $CACHE_DIR/vendor/built_gts
 fi
@@ -107,6 +108,7 @@ export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$CACHE_DIR/vendor/built_gts/pkgconfig
 export PATH=$PATH:$CACHE_DIR/vendor/built_gts/bin
 
 if [ ! -d $CACHE_DIR/vendor/built_graphviz ]; then
+ echo "building graphviz"
  build_graphviz $CACHE_DIR/vendor/graphviz $CACHE_DIR/vendor/built_graphviz
  ls $CACHE_DIR/vendor/built_graphviz
 fi
