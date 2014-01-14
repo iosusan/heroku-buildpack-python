@@ -421,6 +421,7 @@ WORKING_DIR=$(pwd)
 
 # check if required distribute and pip
 echo "installing distribute"
+echo "which python `which python`"
 echo "PATH: $PATH"
 echo "PYTHONPATH: $PYTHONPATH"
 echo "PYTHONHOME: $PYTHONHOME"
