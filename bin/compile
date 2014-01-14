@@ -421,7 +421,7 @@ WORKING_DIR=$(pwd)
 # check if required distribute and pip
 echo "installing distribute"
 cd $ROOT_DIR/vendor/distribute-$DISTRIBUTE_VERSION/
-/app/.heroku/python/bin/python setup.py install # &> /dev/null
+$BUILD_DIR/.heroku/python/bin/python setup.py install # &> /dev/null
 cd $WORKING_DIR
 
 echo "installing pip"
