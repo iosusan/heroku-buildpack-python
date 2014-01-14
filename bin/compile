@@ -421,6 +421,9 @@ WORKING_DIR=$(pwd)
 
 # check if required distribute and pip
 echo "installing distribute"
+echo "PATH: $PATH"
+echo "PYTHONPATH: $PYTHONPATH"
+echo "PYTHONHOME: $PYTHONHOME"
 cd $ROOT_DIR/vendor/distribute-$DISTRIBUTE_VERSION/
 python setup.py install # &> /dev/null
 cd $WORKING_DIR
