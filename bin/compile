@@ -47,7 +47,7 @@ download_graphviz() {
 	# untarr
 	tar zxvf graphviz-2.34.0.tar.gz > /dev/null 2>&1
 	# remove compressed
-	rm graphviz-2.34.tar.gz
+	rm graphviz-2.34.0.tar.gz
 	# move uncoimpressed to dest dir
 	mkdir -p $1
 	mv graphviz-2.34.0/* $1
