@@ -422,6 +422,8 @@ WORKING_DIR=$(pwd)
 # check if required distribute and pip
 echo "installing distribute"
 echo "which python `which python`"
+echo "/app/.heroku/python/bin: `ls /app/.heroku/python/bin/`"
+echo `find / -name "python" -print"
 echo "PATH: $PATH"
 echo "PYTHONPATH: $PYTHONPATH"
 echo "PYTHONHOME: $PYTHONHOME"
