@@ -426,7 +426,7 @@ cd $WORKING_DIR
 
 echo "installing pip"
 cd $ROOT_DIR/vendor/pip-$PIP_VERSION/
-.heroku/python setup.py install # &> /dev/null
+$BUILD_DIR/.heroku/python/bin/python setup.py install # &> /dev/null
 cd $WORKING_DIR
 
 #set -e
