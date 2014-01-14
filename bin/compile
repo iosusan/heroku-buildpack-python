@@ -18,111 +18,6 @@ BUILD_DIR=$1
 CACHE_DIR=$2
 ENV_FILE=$3
 
-########################################################################
-# install gts and graphviz
-########################################################################
-download_gts() {
-	#$1 is the destination dir
-	# download to tmp dir
-	mkdir -p tmp_gts
-	cd tmp_gts
-	curl -L http://downloads.sourceforge.net/project/gts/gts/0.7.6/gts-0.7.6.tar.gz > gts-0.7.6.tar.gz
-	# untarr it
-	tar zxvf gts-0.7.6.tar.gz > /dev/null 2>&1
-	# remove compressed
-	rm gts-0.7.6.tar.gz
-	# move uncompressed to destination dir
-	mkdir -p $1
-	#mv gts-0.7.6/* $1
-	cp -aR gts-0.7.6 $1
-	rm -Rf gts-0.7.6
-	# remove tmp dir
-	cd -
-	rm -R tmp_gts
-}
-
-download_graphviz() {
-	# $1 is the dest dir
-	mkdir -p tmp_graphviz
-	cd tmp_graphviz
-	curl -O http://www.graphviz.org/pub/graphviz/stable/SOURCES/graphviz-2.34.0.tar.gz
-	# untarr
-	tar zxvf graphviz-2.34.0.tar.gz > /dev/null 2>&1
-	# remove compressed
-	rm graphviz-2.34.0.tar.gz
-	# move uncoimpressed to dest dir
-	mkdir -p $1
-	#mv -f graphviz-2.34.0/* $1
-	cp -aR graphviz-2.34.0 $1
-	rm -Rf graphviz-2.34.0
-	# remove tmp dir
-	cd -
-	rm -R tmp_graphviz
-}
-
-build_gts(){
-	#$1 is the sources dir
-	#$2 is the dest dir
-	cd $1
-	ls
-	configure --prefix="/gts" > /dev/null 2>&1
-	make -j5 > /dev/null 2>&1
-	make install DESTDIR=$2 > /dev/null 2>&1
-	cd -
-}
-build_graphviz(){
-	#$1 is the sources dir
-	#$2 is the dest dir
-	cd $1
-	#configure --prefix="/graphviz" --enable-static=yes --with-libgd=no --enable-ltdl=no --disable-swig --disable-sharp --disable-guile --disable-io --disable-java --disable-lua --disable-ocaml --disable-peril --disable-php --disable-ruby --disable-tcl --with-gts=yes > /dev/null 2>&1
-	configure --prefix="/graphviz" > /dev/null 2>&1
-	make -j5 > /dev/null 2>&1
-	make install DESTDIR=$2 > /dev/null 2>&1
-	cd -
-}
-DOWNLOAD_DIR=$CACHE_DIR/downloads
-if [ ! -d $DOWNLOAD_DIR ]; then
-	mkdir -p $DOWNLOAD_DIR
-fi
-
-if [ ! -d $CACHE_DIR/vendor/gts ]; then
- download_gts $CACHE_DIR/vendor/gts
- echo "downloaded gts"
- #ls $CACHE_DIR/vendor/gts/
-fi
-if [ ! -d $CACHE_vendor/graphviz ]; then
- download_graphviz $CACHE_DIR/vendor/graphviz
- echo "downloaded graphviz"
- #ls $CACHE_DIR/vendor/graphviz
-fi
-
-if [ ! -d $CACHE_DIR/vendor/built_gts ]; then
- echo "building gts"
- build_gts $CACHE_DIR/vendor/gts/gts-0.7.6 $CACHE_DIR/vendor/built_gts
- #ls $CACHE_DIR/vendor/built_gts
-fi
-# before compiling graphviz, update libs
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$CACHE_DIR/vendor/built_gts/lib
-export LIBRARY_PATH=$LIBRARY_PATH:$CACHE_DIR/vendor/built_gts/lib
-export C_INCLUDE_PATH=$C_INCLUDE_PATH:$CACHE_DIR/vendor/built_gts/include
-export CPLUS_INCLUDE_PATH=$CPLUS_INCLUDE_PATH:$CACHE_DIR/vendor/built_gts/include
-export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$CACHE_DIR/vendor/built_gts/pkgconfig
-export PATH=$PATH:$CACHE_DIR/vendor/built_gts/bin
-
-if [ ! -d $CACHE_DIR/vendor/built_graphviz ]; then
- echo "building graphviz"
- build_graphviz $CACHE_DIR/vendor/graphviz/graphviz-2.34.0 $CACHE_DIR/vendor/built_graphviz
- #ls $CACHE_DIR/vendor/built_graphviz
-fi
-
-# move gts and graphviz to slug
-mkdir -p $BUILD_DIR/tools
-cp -aR $CACHE_DIR/vendor/built_gts/gts $BUILD_DIR/tools
-cp -aR $CACHE_DIR/vendor/built_graphviz/graphviz $BUILD_DIR/tools
-######################################################################
-######################################################################
-######################################################################
-# then install python stuff
 
 CACHED_DIRS=".heroku"
 
@@ -332,15 +227,24 @@ bpwatch start collectstatic
   sub-env $BIN_DIR/steps/collectstatic
 bpwatch stop collectstatic
 
+
+# Graphviz binary package
+GRAPHVIZ_BINARY="https://s3-us-west-2.amazonaws.com/mfenniak-graphviz/graphviz-2.30.tgz"
+GRAPHVIZ_VENDOR="iosus/graphviz"
+puts-step "Installing graphviz package"
+mkdir -p $1/$GRAPHVIZ_VENDOR
+curl $GRAPHVIZ_BINARY -o - | tar -xz -C $1/$GRAPHVIZ_VENDOR -f -
+
+
 # ### Finalize
 #
 
 # Set context environment variables.
-set-env PATH '$HOME/.heroku/python/bin:$HOME/tools/graphviz/bin:$PATH'
+set-env PATH '$HOME/.heroku/python/bin:$HOME/iosus/graphviz/bin:$PATH'
 set-env PYTHONUNBUFFERED true
 set-env PYTHONHOME /app/.heroku/python
-set-default-env LIBRARY_PATH /app/.heroku/vendor/lib:/app/tools/graphviz/lib:/app/tools/gts/lib
-set-default-env LD_LIBRARY_PATH /app/.heroku/vendor/lib:/app/tools/graphviz/lib:/app/tools/gts/lib
+set-default-env LIBRARY_PATH /app/.heroku/vendor/lib:/app/iosus/graphviz/lib
+set-default-env LD_LIBRARY_PATH /app/.heroku/vendor/lib:/app/iosus/graphviz/lib
 set-default-env LANG en_US.UTF-8
 set-default-env PYTHONHASHSEED random
 set-default-env PYTHONPATH /app/
