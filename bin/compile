@@ -413,7 +413,6 @@ mv python .heroku/python
 echo $PYTHON_VERSION > .heroku/python-version
 ############
 
-set +e
 WORKING_DIR=$(pwd)
 
 # check if required distribute and pip
@@ -435,8 +434,8 @@ cd $WORKING_DIR
 
 echo "installing dependencies with pip"
 
-pip install -r requirements.txt --exists-action=w --src=./.heroku/src &> /dev/null
-#$WORKING_DIR/.heroku/python/bin/pip install -r requirements.txt --exists-action=w --src=./.heroku/src &> /dev/null 
+#pip install -r requirements.txt --exists-action=w --src=./.heroku/src &> /dev/null
+$WORKING_DIR/.heroku/python/bin/pip install -r requirements.txt --exists-action=w --src=./.heroku/src &> /dev/null 
 
 # Set context environment variables.
 #set-env PATH '$HOME/.heroku/python/bin:$HOME/tools/graphviz/bin:$PATH'
