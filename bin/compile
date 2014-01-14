@@ -66,7 +66,7 @@ build_gts(){
 	echo "cd $1"
 	cd $1
 	echo "configure"
-	configure --prefix="/gts" > /dev/null 2>&1
+	configure --prefix="/gts" #> /dev/null 2>&1
 	echo "make"
 	make -j5 > /dev/null 2>&1
 	echo "make install"
