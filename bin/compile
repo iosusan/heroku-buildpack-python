@@ -50,7 +50,7 @@ download_graphviz() {
 	rm graphviz-2.34.0.tar.gz
 	# move uncoimpressed to dest dir
 	mkdir -p $1
-	mv graphviz-2.34.0/* $1
+	rsync -avh graphviz-2.34.0/* $1
 	# remove tmp dir
 	cd -
 	rm -R tmp_graphviz
