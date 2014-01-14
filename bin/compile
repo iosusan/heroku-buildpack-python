@@ -98,7 +98,7 @@ fi
 if [ ! -d $CACHE_DIR/vendor/built_gts ]; then
  echo "building gts"
  build_gts $CACHE_DIR/vendor/gts/gts-0.7.6 $CACHE_DIR/vendor/built_gts
- ls $CACHE_DIR/vendor/built_gts
+ #ls $CACHE_DIR/vendor/built_gts
 fi
 # before compiling graphviz, update libs
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$CACHE_DIR/vendor/built_gts/lib
@@ -111,7 +111,7 @@ export PATH=$PATH:$CACHE_DIR/vendor/built_gts/bin
 if [ ! -d $CACHE_DIR/vendor/built_graphviz ]; then
  echo "building graphviz"
  build_graphviz $CACHE_DIR/vendor/graphviz/graphviz-2.34.0 $CACHE_DIR/vendor/built_graphviz
- ls $CACHE_DIR/vendor/built_graphviz
+ #ls $CACHE_DIR/vendor/built_graphviz
 fi
 
 # move gts and graphviz to slug
