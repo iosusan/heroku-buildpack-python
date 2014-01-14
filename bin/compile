@@ -28,7 +28,7 @@ download_gts() {
 	cd tmp_gts
 	curl -L http://downloads.sourceforge.net/project/gts/gts/0.7.6/gts-0.7.6.tar.gz > gts-0.7.6.tar.gz
 	# untarr it
-	tar zxvf gts-0.7.6.tar.gz
+	tar zxvf gts-0.7.6.tar.gz > /dev/null 2 >&1
 	# remove compressed
 	rm gts-0.7.6.tar.gz
 	# move uncompressed to destination dir
@@ -45,7 +45,7 @@ download_graphviz() {
 	cd tmp_graphviz
 	curl -O http://www.graphviz.org/pub/graphviz/stable/SOURCES/graphviz-2.34.0.tar.gz
 	# untarr
-	tar zxvf graphviz-2.34.0tar.gz
+	tar zxvf graphviz-2.34.0.tar.gz > /dev/null 2>&1
 	# remove compressed
 	rm graphviz-2.34.tar.gz
 	# move uncoimpressed to dest dir
