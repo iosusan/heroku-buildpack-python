@@ -74,7 +74,8 @@ build_graphviz(){
 	#$1 is the sources dir
 	#$2 is the dest dir
 	cd $1
-	configure --prefix="/graphviz" --enable-static=yes --with-libgd=no --enable-ltdl=no --disable-swig --disable-sharp --disable-guile --disable-io --disable-java --disable-lua --disable-ocaml --disable-peril --disable-php --disable-ruby --disable-tcl --with-gts=yes > /dev/null 2>&1
+	#configure --prefix="/graphviz" --enable-static=yes --with-libgd=no --enable-ltdl=no --disable-swig --disable-sharp --disable-guile --disable-io --disable-java --disable-lua --disable-ocaml --disable-peril --disable-php --disable-ruby --disable-tcl --with-gts=yes > /dev/null 2>&1
+	configure --prefix="/graphviz" > /dev/null 2>&1
 	make -j5 > /dev/null 2>&1
 	make install DESTDIR=$2 > /dev/null 2>&1
 	cd -
