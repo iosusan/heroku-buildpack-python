@@ -45,7 +45,7 @@ download_graphviz() {
 	cd tmp_graphviz
 	curl -O http://www.graphviz.org/pub/graphviz/stable/SOURCES/graphviz-2.34.0.tar.gz
 	# untarr
-	tar zxvf graphviz-2.34.tar.gz
+	tar zxvf graphviz-2.34.0tar.gz
 	# remove compressed
 	rm graphviz-2.34.tar.gz
 	# move uncoimpressed to dest dir
@@ -56,6 +56,24 @@ download_graphviz() {
 	rm -R tmp_graphviz
 }
 
+build_gts(){
+	#$1 is the sources dir
+	#$2 is the dest dir
+	cd $1
+	configure --prefix="/gts" > /dev/null 2>&1
+	make -j5 > /dev/null 2>&1
+	make install DESTDIR=$2 > /dev/null 2>&1
+	cd -
+}
+build_graphviz(){
+	#$1 is the sources dir
+	#$2 is the dest dir
+	cd $1
+	configure --prefix="/graphviz" --with-gts=yes > /dev/null 2>&1
+	make -j5 > /dev/null 2>&1
+	make install DESTDIR=$2 > 2>&1
+	cd -
+}
 DOWNLOAD_DIR=$CACHE_DIR/downloads
 if [ ! -d $DOWNLOAD_DIR ]; then
 	mkdir -p $DOWNLOAD_DIR
@@ -63,11 +81,28 @@ fi
 
 if [ ! -d $CACHE_DIR/vendor/gts ]; then
  download_gts $CACHE_DIR/vendor/gts
- ls $CACHE_DIR/vendor/gts/
+ #ls $CACHE_DIR/vendor/gts/
 fi
 if [ ! -d $CACHE_vendor/graphviz ]; then
  download_graphviz $CACHE_DIR/vendor/graphviz
- ls $CACHE_DIR/vendor/graphviz
+ #ls $CACHE_DIR/vendor/graphviz
+fi
+
+if [ ! -d $CACHE_DIR/vendor/built_gts ]; then
+ build_gts $CACHE_DIR/vendor/gts $CACHE_DIR/vendor/built_gts
+ ls $CACHE_DIR/vendor/built_gts
+fi
+# before compiling graphviz, update libs
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$CACHE_DIR/vendor/built_gts/lib
+export LIBRARY_PATH=$LIBRARY_PATH:$CACHE_DIR/vendor/built_gts/lib
+export C_INCLUDE_PATH=$C_INCLUDE_PATH:$CACHE_DIR/vendor/built_gts/include
+export CPLUS_INCLUDE_PATH=$CPLUS_INCLUDE_PATH:$CACHE_DIR/vendor/built_gts/include
+export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$CACHE_DIR/vendor/built_gts/pkgconfig
+export PATH=$PATH:$CACHE_DIR/vendor/built_gts/bin
+
+if [ ! -d $CACHE_DIR/vendor/built_graphviz ]; then
+ build_graphviz $CACHE_DIR/vendor/graphviz $CACHE_DIR/vendor/built_graphviz
+ ls $CACHE_DIR/vendor/built_gts
 fi
 
 exit 0
