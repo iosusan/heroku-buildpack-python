@@ -85,10 +85,12 @@ fi
 
 if [ ! -d $CACHE_DIR/vendor/gts ]; then
  download_gts $CACHE_DIR/vendor/gts
+ echo "downloaded gts"
  #ls $CACHE_DIR/vendor/gts/
 fi
 if [ ! -d $CACHE_vendor/graphviz ]; then
  download_graphviz $CACHE_DIR/vendor/graphviz
+ echo "downloaded graphviz"
  #ls $CACHE_DIR/vendor/graphviz
 fi
 
