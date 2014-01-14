@@ -102,9 +102,13 @@ export PATH=$PATH:$CACHE_DIR/vendor/built_gts/bin
 
 if [ ! -d $CACHE_DIR/vendor/built_graphviz ]; then
  build_graphviz $CACHE_DIR/vendor/graphviz $CACHE_DIR/vendor/built_graphviz
- ls $CACHE_DIR/vendor/built_gts
+ ls $CACHE_DIR/vendor/built_graphviz
 fi
 
+# move gts and graphviz to slug
+mkdir -p $BUILD_DIR/tools
+cp -aR $CACHE_DIR/vendor/built_gts $BUILD_DIR/tools/gts
+cp -aR $CACHE_DIR/vendor/built_graphviz $BUILD_DIR/tools/graphviz
 exit 0
 ######################################################################
 ######################################################################
