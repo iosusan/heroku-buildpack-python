@@ -295,7 +295,7 @@ if [ -d $GRAPHVIZ_INSTALLTMP ]; then
  cp -aR $GRAPHVIZ_INSTALLTMP/graphviz $BUILD_DIR/tools/
 else
  # nothing in $GRAPHVIZ_INSTALLTMP, take it from $BASE_DIR/$INSTALLDIR/graphviz
- cp -aR $BASE_DIR/$INSTALLDIR/graphviz $BUILD_DIR/tools/
+ cp -aR $BASE_DIR/$INSTALLDIR/graphviz/* $BUILD_DIR/tools/
 fi
 
 
@@ -322,6 +322,8 @@ fi
 echo "-------> libs compiled"
 echo "#############################"
 echo " let's go for python environment"
+
+exit 0
 
 echo "------> installing PYTHON"
 
