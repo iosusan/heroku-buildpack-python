@@ -65,6 +65,7 @@ build_gts(){
 	#$2 is the dest dir
 	echo "cd $1"
 	cd $1
+	ls
 	echo "configure"
 	configure --prefix="/gts" #> /dev/null 2>&1
 	echo "make"
